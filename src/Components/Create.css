@@ -1,0 +1,155 @@
+
+
+
+.Signup-container
+{
+  
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  height: auto;
+  width: 430px;
+  border-radius: 8px;
+  background-color: #FFFFFF;
+  padding: 10px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.error
+{
+    color: red;
+    font-size: 12px;
+}
+
+.Signup-container h1{
+    font-size: 28px;
+    text-align: center;
+    font-weight: 500;
+    margin: 8px;
+}
+
+.Signup-container form label{
+    font-size: 16px;
+    font-weight: 300;
+    color: grey;
+}
+
+.nameContainer
+{
+    display: flex;
+    width: 100%;
+    gap: 5px;
+    margin: 10px 0;
+}
+
+
+
+.Name-inputs
+{
+    height: 40px;
+    width: 100%;
+    border-radius: 5px;
+    border: 1px solid grey;
+    padding-left: 10px;
+    outline: none ;
+}
+
+.Birth{
+    width: 100%;
+}
+  
+
+.dob
+{
+    height: 40px;
+    width: 100%;
+    font-size: 18px;
+    border: 1px solid grey;
+    padding-left: 10px;
+    border-radius:8px ;
+    cursor: pointer;
+    color: grey;
+    
+}
+
+.firstName{
+    width: 50%;
+}
+
+.SurName
+{
+    width: 50%;
+}
+
+
+.gender-container{
+    width: 100%; 
+}
+
+
+
+.gender
+{
+    width: 100%;
+    height: 40px;
+    border: 1px solid grey;
+    background-color: #FFFFFF;
+    border-radius: 8px;
+    color: grey;
+    padding-left: 10px;
+}
+
+.ids
+{
+    
+    width: 100%;
+}
+
+.ids-inputs
+{
+    margin: 5px 0px;
+    padding-left: 10px;
+    width: 100%;
+    height: 40px;
+    border: 1px solid grey;
+    outline: none;
+    border-radius: 8px;
+}
+
+
+.ids-inputs:nth-child(2)::-webkit-inner-spin-button
+{
+    -webkit-appearance: none;
+}
+
+button
+{
+    width: 100%;
+    height: 40px;
+    margin: 10px 0px;
+    border: none;
+    color: #FFFFFF;
+    font-weight: 500;
+    cursor: pointer;
+    background-color: #1e81de;
+    border-radius: 8px;
+}
+
+
+.a
+{
+    width: 100%;
+    text-align: center;
+}
+
+.a a
+{
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.a a:hover
+{
+    text-decoration: underline;
+}

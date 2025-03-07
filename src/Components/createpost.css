@@ -1,0 +1,47 @@
+.create-post {
+    width: 100%;
+    max-width: 500px;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background: #fff;
+}
+
+.create-post h2 {
+    margin-bottom: 10px;
+}
+
+.create-post textarea {
+    width: 100%;
+    height: 80px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.create-post input[type="file"] {
+    margin-top: 10px;
+}
+
+.image-preview img {
+    width: 100%;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+
+.create-post button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    background: blue;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.create-post button:disabled {
+    background: gray;
+}

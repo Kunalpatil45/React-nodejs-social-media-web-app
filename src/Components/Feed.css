@@ -1,0 +1,95 @@
+/* .post-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    justify-content: center;
+  } */
+  
+  .post-item {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .post-item:hover {
+    transform: scale(1.02);
+  }
+  
+  .post-header {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    gap: 10px;
+  }
+  
+  .post-profile-image {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .imgcontainer {
+    position: relative;
+  }
+  
+  .user-posts {
+    position: relative;
+    margin: 5px 40px;
+    width: 650px;
+    min-height: 95vh;
+  }
+  .post-image {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  
+  .heart-animation {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    animation: fadeOut 2s ease-in-out;
+  }
+  
+  @keyframes fadeOut {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+  
+  .post-footer {
+    padding: 10px;
+  }
+  
+  .description {
+    font-size: 14px;
+    margin-bottom: 5px;
+  }
+  
+  .icon {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+  }
+  
+  .heart {
+    font-size: 24px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  
+  .heart:hover {
+    color: red;
+  }
+  
+  .likes {
+    font-size: 14px;
+    color: #555;
+  }
+  

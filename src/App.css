@@ -1,0 +1,38 @@
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+
+body{
+  background-color:#F2F4F7;
+  color: black;
+  font-family: cursive;
+}
+
+.mainDiv
+{
+  display: flex;
+}
+
+.app-container {
+  display: flex;
+  height: 100vh;
+}
+
+.navbar {
+  width: 250px;
+  background-color: #f4f4f4;
+  padding: 5px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.main-content {
+  flex: 1;
+  padding: 20px;
+  background-color: #fff;
+  overflow-y: auto;
+}
