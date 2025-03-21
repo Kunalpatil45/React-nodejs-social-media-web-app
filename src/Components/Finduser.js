@@ -72,7 +72,7 @@ const FindUser = () => {
               <li key={user.userId} onClick={() => handleUserClick(user.userId)}>
                 <img src={user.profileImage} alt="Profile" width="80" height="80" />
                 <div className="user-info">
-                <div>{user.firstName} {user.lastName}</div>
+                <div>{user.Name} </div>
                 <p>@{user.userId}</p>
                 </div>
                 

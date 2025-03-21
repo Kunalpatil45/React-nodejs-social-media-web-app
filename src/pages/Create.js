@@ -35,20 +35,12 @@ const Create = () => {
                 className='Name-inputs'
                 type="text"
                 placeholder='First Name'
-                {...register("firstName", { required: "First Name is required" })}
+                {...register("Name", { required: "Name is required" })}
               />
-              {errors.firstName && <p className="error">{errors.firstName.message}</p>}
+              {errors.Name && <p className="error">{errors.Name.message}</p>}
             </div>
 
-            <div className='SurName'>
-              <input
-                className='Name-inputs'
-                type="text"
-                placeholder='Sur Name'
-                {...register("lastName", { required: "Last Name is required" })}
-              />
-              {errors.lastName && <p className="error">{errors.lastName.message}</p>}
-            </div>
+           
           </div>
 
           <div className='nameContainer'>
@@ -56,6 +48,7 @@ const Create = () => {
               <label htmlFor="dob">Date Of Birth</label><br />
               <input
                 className='dob'
+                name="dob"
                 type="date"
                 {...register("dob", { required: "Date of Birth is required" })}
               />

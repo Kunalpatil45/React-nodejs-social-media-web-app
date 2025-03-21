@@ -7,7 +7,7 @@ import { UserContext } from "../context/UserContext";
 import "./profile.css";
 
 
-import { CiHeart } from "react-icons/ci";
+
 
 const Profile = () => {
   const { id } = useParams();
@@ -47,27 +47,7 @@ const Profile = () => {
     fetchUserData();
   }, [id, loggedInUser]);
 
-  const handleLike = async (postId) => {
-    if (!loggedInUser?.userId) return;
-    
-    try {
-      const response = await axios.post("http://localhost:5000/likePost", {
-        postId,
-        userId: loggedInUser.userId,
-      });
-
-      if (response.status === 200) {
-        setUser((prevUser) => ({
-          ...prevUser,
-          posts: prevUser.posts.map((post) =>
-            post._id === postId ? { ...post, likes: response.data.likes } : post
-          ),
-        }));
-      }
-    } catch (error) {
-      console.error("Error liking post:", error);
-    }
-  };
+ 
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p className="error">{error}</p>;
@@ -83,13 +63,9 @@ const Profile = () => {
       </div>
 
       <p className="User-id">{user?.userId || "No ID available"}</p>
-      <p className="User-name">{user?.firstName + " " + user?.lastName || "No name available"}</p>
+      <p className="User-name">{user?.Name || "No name available"}</p>
 
-    <button onClick={()=>{
-      
-      navigate("/updateuser")
-      
-    }}>Edit Profile</button>
+    
       <div className="user-details">
         <div className="user-post">{user?.posts?.length || 0} Posts</div>
         <div className="user-follower">{user?.followers || 0} Followers</div>
@@ -123,13 +99,7 @@ const Profile = () => {
                   <p className="description">
                     {user.userId} {post.text}
                   </p>
-                  <div className="icon">
-                    <CiHeart
-                      className={`heart ${post.likes.includes(loggedInUser?.userId) ? "liked" : ""}`}
-                      onClick={() => handleLike(post._id)}
-                    />
-                    <div className="likes">{post.likes.length} likes</div>
-                  </div>
+                  
                 </div>
               </div>
             ))}

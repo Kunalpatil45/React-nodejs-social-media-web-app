@@ -40,37 +40,58 @@ app.use(cors({
 
 // Signup Route
 app.post('/signup', async (req, res) => {
-  console.log("Incoming signup request:", req.body);  // Debugging log
+  console.log("Incoming signup request:", req.body);
 
-  // Extract userData correctly
-  let { userData, userId } = req.body;
+  let { userId, userData } = req.body;
 
-  if (!userData || !userId) {
+  if (!userId || !userData) {
       return res.status(400).json({ error: "User data and userId are required" });
   }
 
-  let { firstName, lastName, email, dob, password, gender } = userData;
+  try {
+      userData = JSON.parse(userData);
 
-  // Check if all fields are provided
-  if (!firstName || !lastName || !email || !dob || !password || !gender) {
+      if (userData.userData) {
+          userData = userData.userData;
+      }
+  } catch (error) {
+      return res.status(400).json({ error: "Invalid userData format" });
+  }
+
+  let { Name, email, dob, password, gender } = userData;
+
+  if (!Name || !email || !dob || !password || !gender) {
       return res.status(400).json({ error: "All fields are required" });
   }
 
   try {
       let existingUser = await User.findOne({ email });
-      if (existingUser) return res.status(500).send("User already exists");
+      if (existingUser) return res.status(400).json({ error: "User already exists" });
+
+      let profileImageUrl = "/default-profile.png"; // Default image path
+
+      // ✅ Handle profile image upload if provided
+      if (req.files && req.files.profileImage) {
+          const result = await cloudinary.uploader.upload(req.files.profileImage.tempFilePath, {
+              folder: "profiles", // Cloudinary folder
+              use_filename: true,
+          });
+
+          console.log("Cloudinary Upload Success:", result);
+          profileImageUrl = result.secure_url; // Save Cloudinary URL
+      }
 
       // Hash password
       bcrypt.genSalt(10, (err, salt) => {
           bcrypt.hash(password, salt, async (err, hash) => {
               let newUser = new User({
-                  userId,  // ✅ Ensure userId is passed correctly
-                  firstName,
-                  lastName,
+                  userId,
+                  Name,
                   email,
                   dob,
                   gender,
-                  password: hash
+                  password: hash,
+                  profileImage: profileImageUrl, // Store Cloudinary URL
               });
 
               const savedUser = await newUser.save();
@@ -86,7 +107,9 @@ app.post('/signup', async (req, res) => {
 
 
 
-// Signin Route
+
+
+
 app.post("/signin", async (req, res) => {
   try {
      // Debugging log
@@ -112,8 +135,7 @@ app.post("/signin", async (req, res) => {
       user: {
         id: user.userId,
         email: user.email,
-        name: user.firstName,
-        last: user.lastName,
+        name: user.Name,
         profileImage: user.profileImage,
         gender: user.gender,
       },
@@ -126,11 +148,37 @@ app.post("/signin", async (req, res) => {
 });
 
 app.get("/user/details", async (req, res) => {
+  
   const userId = req.user.id; // Get logged-in user's ID (Assuming you use authentication)
   const user = await User.findById(userId);
   res.json(user);
 });
 
+
+app.post("/logout", (req, res) => {
+  res.clearCookie("token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production", // ✅ true in production (HTTPS)
+      sameSite: "Strict",
+  });
+
+  res.json({ message: "Logout successful" });
+});
+
+
+
+app.get("/user/details", async (req, res) => {
+  const userId = req.user.id; // Get logged-in user's ID (Assuming you use authentication)
+  const user = await User.findById(userId);
+  res.json(user);
+});
+
+
+app.get("/check-userid/:userId", async (req, res) => {
+  const { userId } = req.params;
+  const existingUser = await User.findOne({ userId });
+  res.json({ available: !existingUser });
+});
 
 app.post("/logout", (req, res) => {
   res.clearCookie("token", {
