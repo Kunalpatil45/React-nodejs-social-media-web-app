@@ -141,7 +141,7 @@ const Login = () => {
       </form>
       <div className="right-view">
         <div className="webname">Poster</div>
-        <div className="description">Share your thoughts and moments with text, images, and videos!</div>
+        <div className="description">Share your thoughts and moments with Images!</div>
       </div>
     </div>
   );

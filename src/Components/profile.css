@@ -1,75 +1,74 @@
-
-
-
 .profileContainer {
   position: relative;
   margin: 5px 40px;
   width: 650px;
-  height: auto;  /* Allow content to define height */
-  min-height: unset !important; /* Ensure no extra space */
+  height: auto;
+  min-height: unset !important;
   display: flex;
   flex-direction: column;
+  margin-left: 150px;
   align-items: center;
 }
 
-
-
-.user-profile-image
-{
-    height:250px;
-    width: 100%;
-    place-content: center;
+.user-profile-image {
+  height: 250px;
+  width: 100%;
+  place-content: center;
 }
 
-.user-profile-image img
-{
-    height: 200px;
-    width: 200px;
-    background-color: #fff;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    border-radius: 50%;
+
+.user-profile-image img {
+  height: 200px;
+  width: 200px;
+  background-color: #fff;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 50%;
+  object-fit: cover;
+  background-position: center;
 }
 
-.User-name{
-    width: 100%;
-    text-align: center;
-    font-size: 30px;
-    font-weight: 500;
-
+.User-name {
+  width: 100%;
+  text-align: center;
+  font-size: 30px;
+  font-weight: 500;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-.User-id
-{
-    font-size: 20px;
-    width: 100%;
-    text-align: center;
+.User-id {
+  font-size: 20px;
+  width: 100%;
+  text-align: center;
 }
 
-.user-details
-{
-    display: flex;
-    justify-content: space-around;
-    margin: 10px 0px;
-    font-size: 22px;
-    width: 100%;
-    
+.user-details {
+  display: flex;
+  justify-content: space-around;
+  margin: 10px 0px;
+  font-size: 22px;
+  width: 100%;
 }
- 
-
-
 
 .user-posts {
   width: 100%;
-  height: auto; /* Adjust height dynamically */
-  min-height: unset !important; /* Override any forced height */
+  height: auto;
+  min-height: unset !important;
   background-color: #f9f9f9;
   border-radius: 10px;
   padding-bottom: 10px;
 }
-  .post-item {  background: white;  border-radius: 10px;  padding: 10px;  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);  overflow: hidden;  margin-bottom: 10px; /* Add spacing between posts */}
-  
+
+.post-item {
+  background: white;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
 .post-header {
   display: flex;
   align-items: center;
@@ -77,59 +76,72 @@
   font-weight: bold;
   padding-bottom: 5px;
 }
-  
+
+
+
 .post-profile-image {
   width: 40px;
   height: 40px;
   border-radius: 50%;
 }
-  
+
 .imgcontainer {
   width: 100%;
   max-height: 600px;
   overflow: hidden;
   border-radius: 5px;
 }
-  
+
 .post-image {
   width: 100%;
-  
   max-height: 600px;
   object-fit: cover;
   border-radius: 5px;
 }
-  
-  .post-footer {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    margin-top: 10px;
-  }
-  
-  .description {
-    font-size: 14px;
-    font-weight: bold;
-  }
-  
-  .heart {
-    cursor: pointer;
-    font-size: 25px;
-  }
 
-  .icon{
-    display: flex;
-    align-items: center;
-    gap: 2px;
-  }
+.post-footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-top: 10px;
+}
 
-  
-  .likes {
-    font-size: 14px;
-    color: #888;
-  }
-  
+.description {
+  font-size: 14px;
+  font-weight: bold;
+  font-family: Arial, Helvetica, sans-serif;
+}
 
 
-  
+.post-header button i{
+  color: rgb(224, 229, 234);
+}
 
-  
+.post-header button:hover i{
+  color: rgba(255, 253, 253, 0.99);
+}
+
+.post-header button:hover{
+  background-color: rgba(239, 13, 13, 0.99);
+}
+
+.post-header p{
+  margin-left: 5px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.post-header i:hover {
+  color: rgba(239, 13, 13, 0.99);
+}
+
+.post-header button
+{
+  position: absolute;
+  height:30px;
+  width:30px;
+  background-color: #fff;
+  right: 0;
+  padding: 8px;
+  margin-right: 15px;
+}

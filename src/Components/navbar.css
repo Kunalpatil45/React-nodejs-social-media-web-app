@@ -1,59 +1,150 @@
-
-
+/* Navbar Container */
 .navbar {
-    width: 250px;  /* Fixed width */
+    
+    width: 300px;  /* Fixed width */
     height: 100vh;
-    background-color: #333;
+    position: relative;
+    background-color: rgb(253, 252, 252);
     position: fixed;
+    color: #141414;
     top: 0;
     left: 0;  
     padding: 0; 
-    margin: 0;   
+    margin: 0;
+    margin-top: 20px;   
     display: flex;
     flex-direction: column;
-    /* align-items: center; */
+    font-family: Arial, Helvetica, sans-serif;
+    border-right: 1px solid black;
 }
 
+/* Main content offset for navbar */
 .main-content {
-    margin-left: 250px; /* Match the navbar width */
+    margin-left: 250px; /* Matches navbar width */
     padding: 20px;
 }
-  
 
-
-.navbar ul li {
-    list-style-type: none; 
-    align-items:center;
+/* Navigation List */
+.navbar ul {
+    height: 50%;
+    list-style-type: none;
+    display: flex;
+    justify-content:space-around;
+    flex-direction: column;
+    padding: 0;
+    margin: 0;
     width: 100%;
-    /* padding-left: 10px; */
-    padding-top: 10px; 
-    
+}
+
+/* Navbar Items */
+.navbar ul li {
+    width: 200px;
+    margin: auto;
+    border-radius: 20px;
+    height: 40px;
+    text-decoration: none;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    letter-spacing: 2px;
+    line-height: 10px;
+    padding: 10px 15px; 
+    font-size: 25px;
+    cursor: pointer;
+    display: flex;  
+    align-items: center;
+    gap: 5px;
 }
 
 
 
+.link {
+    color: black;
+    margin-left: 20px;
+    text-decoration: none;
+}
+
+/* Navbar Icons */
+.navbar li i {
+    font-size: 22px;  /* ✅ Adjust icon size */
+    color: black;
+}
+
+/* Navbar Links */
 .navbar li a {
-    text-decoration: none; 
-    color: white; 
-    padding: 10px 15px;
-    display: block; 
-    font-size: 20px;
-    border-radius: 5px; 
+    /* text-decoration: none;  */
+    color: black; 
+    font-size: 18px;  /* ✅ Adjust text size */
+    flex-grow: 1;  /* ✅ Ensures text fills available space */
     transition: background-color 0.2s ease; 
 }
 
-.log-out
-{
-  width: 60%;
-  height: 30px;
-  background-color: #043baa;
-} 
-.navbar li a:hover {
-    background-color: #575757; 
+/* Hover Effects */
+.navbar li:hover{
+    background-color: #b2b2b2; 
+    
 }
-  
-.navbar li a.active {
-    background-color: #04AA6D; 
-} 
 
- 
+.navbar li:hover a {
+    color: rgb(163, 156, 156);
+}
+
+
+/* Active Link */
+.navbar li.active {
+    color: #cc0000;
+}
+
+/* Logout Button */
+.log-out {
+    width: 80%;
+    height: 35px;
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    margin: 10px auto;
+    display: block;
+    text-align: center;
+    border-radius: 5px;
+    transition: background-color 0.2s ease;
+}
+
+.nav-link {
+    text-align: center;
+    color: black;
+    text-decoration: none;
+}
+
+.log-out:hover {
+    background-color: #cc0000;
+}
+
+/* ✅ Responsive Navbar for Mobile */
+@media (max-width: 768px) {
+    .navbar {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+
+    .main-content {
+        margin-left: 0;
+    }
+
+    .navbar ul {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        padding: 10px 0;
+    }
+
+    .navbar ul li {
+        padding: 10px;
+    }
+
+    .log-out {
+        width: auto;
+        padding: 5px 15px;
+    }
+}

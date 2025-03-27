@@ -6,18 +6,21 @@ import SignIn from "./pages/SignIn";
 import Create from "./pages/Create";
 import Profile from "./Components/User-Profile";
 import Feed from "./Components/Feed";
-import "./Components/Create.css";
 import Navbar from "./Components/Navbar";
 import Uid from "./Components/Uid";
 import Finduser from "./Components/Finduser";
 import Createpost from "./Components/Createpost";
+import Suggestion from "./Components/Suggest";
 
 
 
 const MainLayout = ({ children }) => (
     <div className="app-container">
-    <Navbar />
-    <div className="main-content">{children}</div>
+    {/* <Navbar /> */}
+    
+    <div className="main-content">{children}
+    <Suggestion/>
+    </div>
   </div>
   
   
@@ -38,9 +41,10 @@ const App = () => {
           <Route path="/create-uid" element={<AuthLayout><Uid /></AuthLayout>} />
           <Route path="/create" element={<AuthLayout><Create /></AuthLayout>} />
           <Route path="/" element={<MainLayout><Feed /></MainLayout>} />
-          <Route path="/feed" element={<MainLayout><Feed /> </MainLayout>} />
           <Route path="/profile/:id" element={<MainLayout><Profile /></MainLayout>} />
+          <Route path="/suggestion" element={<MainLayout><Suggestion /></MainLayout>} />
         </Routes>
+        
       </BrowserRouter>
     
   );

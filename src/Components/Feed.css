@@ -1,10 +1,4 @@
-/* .post-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
-    padding: 20px;
-    justify-content: center;
-  } */
+
   
   .post-item {
     background: #fff;
@@ -14,13 +8,12 @@
     transition: transform 0.2s ease-in-out;
   }
   
-  .post-item:hover {
-    transform: scale(1.02);
-  }
+
   
   .post-header {
     display: flex;
     align-items: center;
+    cursor: pointer;
     padding: 10px;
     gap: 10px;
   }
@@ -38,7 +31,7 @@
   
   .user-posts {
     position: relative;
-    margin: 5px 40px;
+    margin: 5px 150px;
     width: 650px;
     min-height: 95vh;
   }

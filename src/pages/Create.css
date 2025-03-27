@@ -1,0 +1,126 @@
+
+
+  
+.webname-signup {
+    text-align: center;
+    font-size: 10px;
+    font-weight: bold;
+    color: #1da1f2;
+    margin-bottom: 10px;
+
+  }
+  .webname-signup {
+    text-align: center;
+    font-size: 32px;
+    font-weight: bold;
+    color: #1da1f2;
+    margin-bottom: 20px;
+  }
+  
+  
+  .Signup-container {
+    background-color: white;
+    margin-top: 40%;
+    padding: 25px;
+    width: 440px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+  }
+  
+  .Signup-container h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  hr {
+    width: 80%;
+    margin: 15px auto;
+    border: 1px solid #ddd;
+  }
+  
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+
+  .nameContainer,
+  .ids {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .Name-inputs,
+  .ids-inputs,
+  .dob,
+  .gender {
+    width: 400px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  
+  
+  .Birth,
+  .gender-container {
+    text-align: left;
+  }
+  
+  .gender {
+    cursor: pointer;
+  }
+
+
+  
+  /* Error Messages */
+  .error {
+    color: red;
+    font-size: 12px;
+    text-align: left;
+  }
+  
+  /* Submit Button */
+  button {
+    background-color: #1da1f2;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  button:hover {
+    background-color: #1991da;
+  }
+  
+  /* Login Link */
+  p {
+    margin-top: 10px;
+    font-size: 14px;
+  }
+  
+  p a {
+    color: #1da1f2;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  p a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 480px) {
+    .Signup-container {
+      width: 90%;
+      padding: 20px;
+    }
+  }
+  

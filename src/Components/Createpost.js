@@ -1,7 +1,9 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useRef } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 import "./createpost.css";
+
 
 const CreatePost = () => {
   const { user } = useContext(UserContext); // Get user from context
@@ -10,9 +12,11 @@ const CreatePost = () => {
   const [preview, setPreview] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();
+
+  const fileInputRef = useRef(null); 
 
   console.log("User Context in CreatePost:", user); // Debugging log
-
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -53,6 +57,7 @@ const CreatePost = () => {
       setText("");
       setImage(null);
       setPreview("");
+      navigate("/profile/" + user.id);
     } catch (err) {
       console.error("Post creation error:", err.response?.data || err.message);
       setMessage("Failed to create post.");
@@ -71,12 +76,31 @@ const CreatePost = () => {
           value={text}
           onChange={(e) => setText(e.target.value)}
         />
-        <input type="file" accept="image/*" onChange={handleImageChange} />
+
+        
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleImageChange}
+          ref={fileInputRef}
+          style={{ display: "none" }} 
+        />
+
+        
+        <button
+          type="button"
+          className="upload-btn"
+          onClick={() => fileInputRef.current.click()} 
+        >
+         <i class="fa-solid fa-arrow-up-from-bracket"></i> Upload Image
+        </button>
+
         {preview && (
           <div className="image-preview">
             <img src={preview} alt="Preview" />
           </div>
         )}
+
         <button type="submit" disabled={loading}>
           {loading ? "Posting..." : "Post"}
         </button>

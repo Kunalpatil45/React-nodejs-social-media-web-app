@@ -1,6 +1,6 @@
 .Signup-container {
   max-width: 500px;
-  margin: 0 auto;
+  margin: 100px auto;
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 10px;
@@ -18,11 +18,13 @@
   display: flex;
   justify-content: center;
   margin-bottom: 20px;
+  
 }
 
 .profilepreview img {
   border-radius: 50%;
   object-fit: cover;
+  background-color: #33333346;
 }
 
 .ids-inputs {

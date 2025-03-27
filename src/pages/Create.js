@@ -1,6 +1,7 @@
 import React from 'react';
 import { useForm } from "react-hook-form";
 import { Link , useNavigate } from "react-router-dom";
+import './Create.css';
 
 
 
@@ -22,7 +23,7 @@ const Create = () => {
   return (
     <>
     
-      <h1 className='webname-signup'>Twitter</h1>
+      <h1 className='webname-signup'>Poster</h1>
       <div className="Signup-container">
         <h1>Create a New Account</h1>
         <hr />

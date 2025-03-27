@@ -19,6 +19,8 @@ const fileUpload = require("express-fileupload");
 const cloudinary = require("cloudinary").v2;
 const mongoose = require("mongoose");
 
+app.use(express.static("public")); 
+
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
@@ -39,75 +41,82 @@ app.use(cors({
 }));
 
 // Signup Route
-app.post('/signup', async (req, res) => {
+app.post("/signup", async (req, res) => {
   console.log("Incoming signup request:", req.body);
-
   let { userId, userData } = req.body;
 
   if (!userId || !userData) {
-      return res.status(400).json({ error: "User data and userId are required" });
+    return res.status(400).json({ error: "User data and userId are required" });
   }
 
   try {
-      userData = JSON.parse(userData);
-
-      if (userData.userData) {
-          userData = userData.userData;
-      }
+    userData = JSON.parse(userData);
+    if (userData.userData) {
+      userData = userData.userData;
+    }
   } catch (error) {
-      return res.status(400).json({ error: "Invalid userData format" });
+    return res.status(400).json({ error: "Invalid userData format" });
   }
 
   let { Name, email, dob, password, gender } = userData;
 
   if (!Name || !email || !dob || !password || !gender) {
-      return res.status(400).json({ error: "All fields are required" });
+    return res.status(400).json({ error: "All fields are required" });
   }
 
   try {
-      let existingUser = await User.findOne({ email });
-      if (existingUser) return res.status(400).json({ error: "User already exists" });
+    // ✅ First, check if the user already exists in MongoDB
+    let existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ error: "User already exists with this email" });
+    }
 
-      let profileImageUrl = "/default-profile.png"; // Default image path
+    let profileImageUrl = "/default_user.png"; // ✅ Default image URL
 
-      // ✅ Handle profile image upload if provided
-      if (req.files && req.files.profileImage) {
-          const result = await cloudinary.uploader.upload(req.files.profileImage.tempFilePath, {
-              folder: "profiles", // Cloudinary folder
-              use_filename: true,
-          });
+    // ✅ Check if user uploaded a profile image
+    if (req.files && req.files.profileImage) {
+      try {
+        const result = await cloudinary.uploader.upload(req.files.profileImage.tempFilePath, {
+          folder: "profiles",
+          use_filename: true,
+        });
 
-          console.log("Cloudinary Upload Success:", result);
-          profileImageUrl = result.secure_url; // Save Cloudinary URL
+        console.log("✅ Cloudinary Upload Success:", result);
+        profileImageUrl = result.secure_url; // Store Cloudinary URL if uploaded
+      } catch (uploadError) {
+        console.error("❌ Cloudinary Upload Failed:", uploadError);
       }
+    }
 
-      // Hash password
-      bcrypt.genSalt(10, (err, salt) => {
-          bcrypt.hash(password, salt, async (err, hash) => {
-              let newUser = new User({
-                  userId,
-                  Name,
-                  email,
-                  dob,
-                  gender,
-                  password: hash,
-                  profileImage: profileImageUrl, // Store Cloudinary URL
-              });
+    // ✅ Hash password before storing
+    bcrypt.genSalt(10, async (err, salt) => {
+      bcrypt.hash(password, salt, async (err, hash) => {
+        let newUser = new User({
+          userId,
+          Name,
+          email,
+          dob,
+          gender,
+          password: hash,
+          profileImage: profileImageUrl, // ✅ Stores Cloudinary URL if uploaded, else default
+        });
 
-              const savedUser = await newUser.save();
-              res.status(201).json({ message: "User registered!", userId: savedUser.userId });
-          });
+        const savedUser = await newUser.save();
+        res.status(201).json({ message: "User registered!", userId: savedUser.userId });
       });
+    });
 
   } catch (err) {
-      console.error("Signup error:", err);
-      res.status(500).json({ error: "Internal server error" });
+    console.error("❌ Signup error:", err);
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 
 
 
-
+app.get("/default_user.png", (req, res) => {
+  res.sendFile(__dirname + "/public/default_user.png"); // ✅ Ensure it serves the file
+});
 
 
 app.post("/signin", async (req, res) => {
@@ -205,65 +214,67 @@ app.get("/searchUser/:userId", async (req, res) => {
 
 app.post("/createPost", async (req, res) => {
   try {
-    console.log("Received Post Request");
-    console.log("Request Body:", req.body);
+    console.log("📩 Received Post Request:", req.body);
 
     const { userId, text } = req.body;
+    if (!userId) return res.status(400).json({ error: "User ID is required" });
+    if (!text) return res.status(400).json({ error: "Post text is required" });
+    if (!req.files || !req.files.image) return res.status(400).json({ error: "Image file is required" });
 
-    if (!userId) {
-      return res.status(400).json({ error: "User ID is required" });
-    }
-
-    if (!req.files || !req.files.image) {
-      return res.status(400).json({ error: "Image file is required" });
-    }
+    // ✅ Validate if the user exists
+    const user = await User.findOne({ userId }); // Find user by userId
+    if (!user) return res.status(404).json({ error: "User not found" });
 
     // ✅ Upload Image to Cloudinary
     const result = await cloudinary.uploader.upload(req.files.image.tempFilePath, {
-      folder: "posts", // Cloudinary folder
+      folder: "posts",
       use_filename: true,
     });
 
-    console.log("Cloudinary Upload Success:", result);
+    console.log("☁️ Cloudinary Upload Success:", result);
     const imageUrl = result.secure_url;
 
-    // ✅ Save Post in MongoDB
+    // ✅ Create and Save Post
     const newPost = new Post({
-      userId,
+      userId: user._id, // Use ObjectId reference
       text,
-      likes: 0,
-      image: imageUrl, // Save Cloudinary Image URL
+      image: imageUrl,
     });
 
     const savedPost = await newPost.save();
-    console.log("✅ Post created successfully:", savedPost);
+    console.log("✅ Post Created Successfully:", savedPost);
 
     // ✅ Update User's Posts Array
-    const updatedUser = await User.findOneAndUpdate(
-      { userId: userId }, // Find user by userId
-      { $push: { posts: savedPost._id } }, // Add post ID to posts array
-      { new: true } // Return updated document
-    );
+    await User.findByIdAndUpdate(user._id, { $push: { posts: savedPost._id } });
 
-    if (!updatedUser) {
-      console.error("❌ User not found");
-      return res.status(404).json({ error: "User not found" });
-    }
-
-    console.log("✅ User updated successfully:", updatedUser);
-    res.status(201).json({ post: savedPost, user: updatedUser });
-
+    res.status(201).json(savedPost);
   } catch (err) {
-    console.error("❌ Post creation error:", err);
+    console.error("❌ Post Creation Error:", err);
     res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+app.get("/recent-users", async (req, res) => {
+  try {
+    const recentUsers = await User.find()
+      .sort({ createdAt: -1 }) // Sort by newest first
+      .limit(5) // Get only 5 users
+      .select("userId profileImage"); // Fetch only userId and profileImage
+
+    res.status(200).json(recentUsers);
+  } catch (error) {
+    console.error("Error fetching recent users:", error);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 });
 
 
 app.get("/posts", async (req, res) => {
   try {
-    // Fetch all posts from the database, sorted by newest first
-    const posts = await Post.find().sort({ createdAt: -1 });
+    // Fetch posts with user details
+    const posts = await Post.find()
+      .populate("userId", "profileImage Name") // Populate user details
+      .sort({ createdAt: -1 });
 
     res.status(200).json(posts);
   } catch (error) {
@@ -271,7 +282,6 @@ app.get("/posts", async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 });
-
 app.get("/user/:userId", async (req, res) => {
   try {
     const { userId } = req.params;
@@ -302,34 +312,29 @@ app.get("/getUserPosts/:userId", async (req, res) => {
   }
 });
 
-app.post("/likePost", async (req, res) => {
+app.delete("/deletePost/:postId", async (req, res) => {
   try {
-    const { postId, userId } = req.body;
-    console.log("Like Request:", req.body);
-    if (!postId || !userId) {
-      return res.status(400).json({ message: "Post ID and User ID are required" });
+    const { postId } = req.params;
+
+    // Find the post and delete it
+    const deletedPost = await Post.findByIdAndDelete(postId);
+    if (!deletedPost) {
+      return res.status(404).json({ error: "Post not found" });
     }
 
-    const post = await Post.findById(postId);
-    if (!post) {
-      return res.status(404).json({ message: "Post not found" });
-    }
+    // Remove post from the user's posts array
+    await User.findOneAndUpdate(
+      { userId: deletedPost.userId }, 
+      { $pull: { posts: postId } }
+    );
 
-    if (post.likes.includes(userId)) {
-      // If user already liked, remove their ID (Unlike)
-      post.likes = post.likes.filter((id) => id !== userId);
-    } else {
-      // Else, add user ID (Like)
-      post.likes.push(userId);
-    }
-
-    await post.save();
-    res.status(200).json({ likes: post.likes }); // Send updated likes array
+    res.status(200).json({ message: "Post deleted successfully" });
   } catch (error) {
-    console.error("Error liking post:", error);
-    res.status(500).json({ message: "Internal Server Error" });
+    console.error("Error deleting post:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
 
 
 

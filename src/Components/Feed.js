@@ -11,7 +11,6 @@ const Feed = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  console.log("loggedInUser", loggedInUser);
   useEffect(() => {
     
     const fetchPosts = async () => {
@@ -20,7 +19,7 @@ const Feed = () => {
           withCredentials: true,
         });
 
-        console.log(response.data);
+        console.log("responses data",response.data);
         if (response.status === 200) {
           setPosts(response.data);
         } else {
@@ -32,10 +31,16 @@ const Feed = () => {
       } finally {
         setLoading(false);
       }
+
+      
     };
 
     fetchPosts();
   }, []);
+
+  const open = () => {
+    window.location.href = `/profile/${loggedInUser.id}`;
+  }
 
   
 
@@ -45,27 +50,29 @@ const Feed = () => {
   return (
     <div className="user-posts">
     <div className="post-grid">
-      {posts.length > 0 ? (
-        posts.map((post) => (
-          <div key={post._id} className="post-item">
-            <div className="post-header">
-              <img src={loggedInUser?.profileImage} alt="Profile" className="post-profile-image" />
-              <p>{post.userId}</p>
-            </div>
-            <div className="imgcontainer">
-              <img src={post.image} alt="Post" className="post-image" />
-            </div>
-
-            <div className="post-footer">
-              <p className="description">{post.userId} {post.text}</p>
-              
-            </div>
-          </div>
-        ))
-      ) : (
-        <p>No posts available.</p>
-        
-      )}
+    {posts.length > 0 ? (
+  posts.map((post) => (
+    <div key={post._id} className="post-item">
+      <div onClick={open} className="post-header">
+        {/* ✅ Show correct user's profile image */}
+        <img
+          src={post.userId?.profileImage || "/default-profile.png"} 
+          alt="Profile"
+          className="post-profile-image"
+        />
+        <p>{post.userId?.Name || "Unknown User"}</p> 
+      </div>
+      <div className="imgcontainer">
+        <img src={post.image} alt="Post" className="post-image" />
+      </div>
+      <div className="post-footer">
+        <p className="description">{post.userId?.Name} {post.text}</p>
+      </div>
+    </div>
+  ))
+) : (
+  <p>No posts available.</p>
+)}
       </div>
     </div>
   );

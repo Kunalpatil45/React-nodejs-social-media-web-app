@@ -1,13 +1,8 @@
-
-
-import React, { useState, useEffect, useContext } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+  import React, { useState, useEffect, useContext } from "react";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import { UserContext } from "../context/UserContext";
 import "./profile.css";
-
-
-
 
 const Profile = () => {
   const { id } = useParams();
@@ -15,7 +10,6 @@ const Profile = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const userId = id || loggedInUser?.userId;
@@ -25,6 +19,8 @@ const Profile = () => {
       return;
     }
 
+    console.log("Logged in user:", loggedInUser?.id);
+    console.log("user?.userId:", userId);
     const fetchUserData = async () => {
       try {
         const response = await axios.get(`http://localhost:5000/user/${userId}`, {
@@ -47,7 +43,25 @@ const Profile = () => {
     fetchUserData();
   }, [id, loggedInUser]);
 
- 
+  // ✅ Function to delete a post
+  const handleDeletePost = async (postId) => {
+    try {
+      const response = await axios.delete(`http://localhost:5000/deletePost/${postId}`, {
+        withCredentials: true,
+      });
+
+      if (response.status === 200) {
+        // ✅ Remove the deleted post from the UI without a full refresh
+        setUser((prevUser) => ({
+          ...prevUser,
+          posts: prevUser.posts.filter((post) => post._id !== postId),
+        }));
+      }
+    } catch (error) {
+      console.error("Error deleting post:", error);
+      alert("Failed to delete the post.");
+    }
+  };
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p className="error">{error}</p>;
@@ -65,7 +79,6 @@ const Profile = () => {
       <p className="User-id">{user?.userId || "No ID available"}</p>
       <p className="User-name">{user?.Name || "No name available"}</p>
 
-    
       <div className="user-details">
         <div className="user-post">{user?.posts?.length || 0} Posts</div>
         <div className="user-follower">{user?.followers || 0} Followers</div>
@@ -85,6 +98,13 @@ const Profile = () => {
                     className="post-profile-image"
                   />
                   <p>{user.userId}</p>
+                  
+                  
+                  {loggedInUser?.id === user?.userId && (
+                    <button onClick={() => handleDeletePost(post._id)}>
+                      <i className="fa-solid fa-trash"></i>
+                    </button>
+                  )}
                 </div>
 
                 <div className="imgcontainer">
@@ -99,7 +119,6 @@ const Profile = () => {
                   <p className="description">
                     {user.userId} {post.text}
                   </p>
-                  
                 </div>
               </div>
             ))}
@@ -109,8 +128,6 @@ const Profile = () => {
         )}
       </div>
     </div>
-    
-    
   );
 };
 
