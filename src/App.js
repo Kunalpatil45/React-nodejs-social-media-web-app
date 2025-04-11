@@ -16,7 +16,6 @@ import Suggestion from "./Components/Suggest";
 
 const MainLayout = ({ children }) => (
     <div className="app-container">
-    {/* <Navbar /> */}
     
     <div className="main-content">{children}
     <Suggestion/>

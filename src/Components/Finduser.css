@@ -35,9 +35,8 @@
     padding: 10px;
     border-radius: 5px;
     margin: 5px 10px;
-    flex-grow: 1; /* Allows it to expand dynamically */
-     /* Enables scrolling only within the list */
-     overflow-y: scroll;
+    flex-grow: 1; 
+    overflow-y: scroll;
     
     
 }

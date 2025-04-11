@@ -59,7 +59,7 @@
 }
 
 button {
-  width: 100%; /* Adjusting for padding and border */
+  width: 100%; 
   margin: 10px 0;
   background-color: #007bff;
   place-items: center;

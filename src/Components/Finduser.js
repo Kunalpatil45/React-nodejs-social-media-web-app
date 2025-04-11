@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // Import for navigation
+import { useNavigate } from "react-router-dom"; 
 import axios from "axios";
 import "./Finduser.css";
 
@@ -8,11 +8,11 @@ const FindUser = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const navigate = useNavigate(); // Hook for navigation
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     if (!searchQuery.trim()) {
-      setUsers([]); // Clear results when input is empty
+      setUsers([]); 
       setError("");
       return;
     }
@@ -35,14 +35,14 @@ const FindUser = () => {
       }
     };
 
-    const debounceTimeout = setTimeout(fetchUsers, 500); // Debounce API calls
+    const debounceTimeout = setTimeout(fetchUsers, 500); 
 
-    return () => clearTimeout(debounceTimeout); // Cleanup on re-render
+    return () => clearTimeout(debounceTimeout);
   }, [searchQuery]);
 
-  // Function to navigate to the user's profile page
+ 
   const handleUserClick = (userId) => {
-    navigate(`/profile/${userId}`); // Redirect to profile page
+    navigate(`/profile/${userId}`); 
   };
 
   return (
@@ -64,7 +64,7 @@ const FindUser = () => {
       {loading && <p>Loading...</p>}
       {error && <p className="error">{error}</p>}
 
-      {/* Display User List */}
+      
       <div className="user-list">
         {users.length > 0 && (
           <ul>

@@ -116,11 +116,3 @@
     text-decoration: underline;
   }
   
-  /* Responsive Design */
-  @media (max-width: 480px) {
-    .Signup-container {
-      width: 90%;
-      padding: 20px;
-    }
-  }
-  

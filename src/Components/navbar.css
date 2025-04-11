@@ -1,7 +1,7 @@
-/* Navbar Container */
+
 .navbar {
     
-    width: 300px;  /* Fixed width */
+    width: 300px;  
     height: 100vh;
     position: relative;
     background-color: rgb(253, 252, 252);
@@ -18,13 +18,13 @@
     border-right: 1px solid black;
 }
 
-/* Main content offset for navbar */
+
 .main-content {
-    margin-left: 250px; /* Matches navbar width */
+    margin-left: 250px; 
     padding: 20px;
 }
 
-/* Navigation List */
+
 .navbar ul {
     height: 50%;
     list-style-type: none;
@@ -36,7 +36,7 @@
     width: 100%;
 }
 
-/* Navbar Items */
+
 .navbar ul li {
     width: 200px;
     margin: auto;
@@ -62,22 +62,22 @@
     text-decoration: none;
 }
 
-/* Navbar Icons */
+
 .navbar li i {
-    font-size: 22px;  /* ✅ Adjust icon size */
+    font-size: 22px; 
     color: black;
 }
 
-/* Navbar Links */
+
 .navbar li a {
-    /* text-decoration: none;  */
+    
     color: black; 
-    font-size: 18px;  /* ✅ Adjust text size */
-    flex-grow: 1;  /* ✅ Ensures text fills available space */
+    font-size: 18px;  
+    flex-grow: 1;  
     transition: background-color 0.2s ease; 
 }
 
-/* Hover Effects */
+
 .navbar li:hover{
     background-color: #b2b2b2; 
     
@@ -88,12 +88,12 @@
 }
 
 
-/* Active Link */
+
 .navbar li.active {
     color: #cc0000;
 }
 
-/* Logout Button */
+
 .log-out {
     width: 80%;
     height: 35px;
@@ -120,31 +120,4 @@
     background-color: #cc0000;
 }
 
-/* ✅ Responsive Navbar for Mobile */
-@media (max-width: 768px) {
-    .navbar {
-        width: 100%;
-        height: auto;
-        position: relative;
-    }
 
-    .main-content {
-        margin-left: 0;
-    }
-
-    .navbar ul {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-        padding: 10px 0;
-    }
-
-    .navbar ul li {
-        padding: 10px;
-    }
-
-    .log-out {
-        width: auto;
-        padding: 5px 15px;
-    }
-}

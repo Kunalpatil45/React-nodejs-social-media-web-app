@@ -6,7 +6,7 @@ import "./createpost.css";
 
 
 const CreatePost = () => {
-  const { user } = useContext(UserContext); // Get user from context
+  const { user } = useContext(UserContext); 
   const [text, setText] = useState("");
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState("");
@@ -16,7 +16,7 @@ const CreatePost = () => {
 
   const fileInputRef = useRef(null); 
 
-  console.log("User Context in CreatePost:", user); // Debugging log
+  
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -33,11 +33,11 @@ const CreatePost = () => {
 
     if (!user || !user.id) {
       setMessage("User not found. Please log in.");
-      console.log("User missing in CreatePost:", user); // Debugging log
+      console.log("User missing in CreatePost:", user); 
       return;
     }
 
-    console.log("User ID being sent:", user.id); // Debugging log
+    
 
     const formData = new FormData();
     formData.append("userId", user.id);
@@ -72,7 +72,7 @@ const CreatePost = () => {
       {message && <p className="message">{message}</p>}
       <form onSubmit={handleSubmit}>
         <textarea
-          placeholder="What's on your mind?"
+          placeholder="Caption Here..."
           value={text}
           onChange={(e) => setText(e.target.value)}
         />

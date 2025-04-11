@@ -11,8 +11,8 @@ const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
 app.use(express.static("public"));
 const multer = require("multer");
-app.use(express.json()); // ✅ Parses JSON body
-app.use(express.urlencoded({ extended: true })); // ✅ Parses URL-encoded data
+app.use(express.json()); 
+app.use(express.urlencoded({ extended: true })); 
 app.use("/uploads", express.static("uploads"));
 const path = require("path");
 const fileUpload = require("express-fileupload");
@@ -32,15 +32,15 @@ app.use(fileUpload({
 }))
 
 
-// Middleware
+
 app.use(cors({
-  origin: "http://localhost:3000", // Allow frontend URL
-  credentials: true, // Allow cookies/session
-  methods: ["GET", "POST", "PUT", "DELETE"], // Allowed HTTP methods
-  allowedHeaders: ["Content-Type", "Authorization"], // Allowed headers
+  origin: "http://localhost:3000", 
+  credentials: true, 
+  methods: ["GET", "POST", "PUT", "DELETE"], 
+  allowedHeaders: ["Content-Type", "Authorization"], 
 }));
 
-// Signup Route
+
 app.post("/signup", async (req, res) => {
   console.log("Incoming signup request:", req.body);
   let { userId, userData } = req.body;
@@ -65,15 +65,15 @@ app.post("/signup", async (req, res) => {
   }
 
   try {
-    // ✅ First, check if the user already exists in MongoDB
+    
     let existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ error: "User already exists with this email" });
     }
 
-    let profileImageUrl = "/default_user.png"; // ✅ Default image URL
+    let profileImageUrl = "/default_user.png"; 
 
-    // ✅ Check if user uploaded a profile image
+  
     if (req.files && req.files.profileImage) {
       try {
         const result = await cloudinary.uploader.upload(req.files.profileImage.tempFilePath, {
@@ -81,14 +81,14 @@ app.post("/signup", async (req, res) => {
           use_filename: true,
         });
 
-        console.log("✅ Cloudinary Upload Success:", result);
-        profileImageUrl = result.secure_url; // Store Cloudinary URL if uploaded
+        
+        profileImageUrl = result.secure_url; 
       } catch (uploadError) {
         console.error("❌ Cloudinary Upload Failed:", uploadError);
       }
     }
 
-    // ✅ Hash password before storing
+   
     bcrypt.genSalt(10, async (err, salt) => {
       bcrypt.hash(password, salt, async (err, hash) => {
         let newUser = new User({
@@ -98,7 +98,7 @@ app.post("/signup", async (req, res) => {
           dob,
           gender,
           password: hash,
-          profileImage: profileImageUrl, // ✅ Stores Cloudinary URL if uploaded, else default
+          profileImage: profileImageUrl, 
         });
 
         const savedUser = await newUser.save();
@@ -115,13 +115,13 @@ app.post("/signup", async (req, res) => {
 
 
 app.get("/default_user.png", (req, res) => {
-  res.sendFile(__dirname + "/public/default_user.png"); // ✅ Ensure it serves the file
+  res.sendFile(__dirname + "/public/default_user.png"); 
 });
 
 
 app.post("/signin", async (req, res) => {
   try {
-     // Debugging log
+     
     const { email, password } = req.body;
 
     if (!email || !password) return res.status(400).json({ error: "Missing email or password" });
@@ -158,7 +158,7 @@ app.post("/signin", async (req, res) => {
 
 app.get("/user/details", async (req, res) => {
   
-  const userId = req.user.id; // Get logged-in user's ID (Assuming you use authentication)
+  const userId = req.user.id; 
   const user = await User.findById(userId);
   res.json(user);
 });
@@ -167,7 +167,7 @@ app.get("/user/details", async (req, res) => {
 app.post("/logout", (req, res) => {
   res.clearCookie("token", {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // ✅ true in production (HTTPS)
+      secure: process.env.NODE_ENV === "production", 
       sameSite: "Strict",
   });
 
@@ -177,7 +177,7 @@ app.post("/logout", (req, res) => {
 
 
 app.get("/user/details", async (req, res) => {
-  const userId = req.user.id; // Get logged-in user's ID (Assuming you use authentication)
+  const userId = req.user.id; 
   const user = await User.findById(userId);
   res.json(user);
 });
@@ -192,7 +192,7 @@ app.get("/check-userid/:userId", async (req, res) => {
 app.post("/logout", (req, res) => {
   res.clearCookie("token", {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // ✅ true in production (HTTPS)
+      secure: process.env.NODE_ENV === "production", 
       sameSite: "Strict",
   });
 
@@ -202,7 +202,7 @@ app.post("/logout", (req, res) => {
 app.get("/searchUser/:userId", async (req, res) => {
   try {
     const { userId } = req.params;
-    const users = await User.find({ userId: { $regex: userId, $options: "i" } }); // Case-insensitive search
+    const users = await User.find({ userId: { $regex: userId, $options: "i" } }); 
     res.status(200).json(users);
   } catch (error) {
     console.error("Error fetching users:", error);
@@ -221,11 +221,11 @@ app.post("/createPost", async (req, res) => {
     if (!text) return res.status(400).json({ error: "Post text is required" });
     if (!req.files || !req.files.image) return res.status(400).json({ error: "Image file is required" });
 
-    // ✅ Validate if the user exists
-    const user = await User.findOne({ userId }); // Find user by userId
+    
+    const user = await User.findOne({ userId }); 
     if (!user) return res.status(404).json({ error: "User not found" });
 
-    // ✅ Upload Image to Cloudinary
+    
     const result = await cloudinary.uploader.upload(req.files.image.tempFilePath, {
       folder: "posts",
       use_filename: true,
@@ -234,9 +234,9 @@ app.post("/createPost", async (req, res) => {
     console.log("☁️ Cloudinary Upload Success:", result);
     const imageUrl = result.secure_url;
 
-    // ✅ Create and Save Post
+    
     const newPost = new Post({
-      userId: user._id, // Use ObjectId reference
+      userId: user._id, 
       text,
       image: imageUrl,
     });
@@ -244,7 +244,7 @@ app.post("/createPost", async (req, res) => {
     const savedPost = await newPost.save();
     console.log("✅ Post Created Successfully:", savedPost);
 
-    // ✅ Update User's Posts Array
+  
     await User.findByIdAndUpdate(user._id, { $push: { posts: savedPost._id } });
 
     res.status(201).json(savedPost);
@@ -257,9 +257,9 @@ app.post("/createPost", async (req, res) => {
 app.get("/recent-users", async (req, res) => {
   try {
     const recentUsers = await User.find()
-      .sort({ createdAt: -1 }) // Sort by newest first
-      .limit(5) // Get only 5 users
-      .select("userId profileImage"); // Fetch only userId and profileImage
+      .sort({ createdAt: -1 }) 
+      .limit(5)
+      .select("userId profileImage"); 
 
     res.status(200).json(recentUsers);
   } catch (error) {
@@ -271,9 +271,9 @@ app.get("/recent-users", async (req, res) => {
 
 app.get("/posts", async (req, res) => {
   try {
-    // Fetch posts with user details
+    
     const posts = await Post.find()
-      .populate("userId", "profileImage Name") // Populate user details
+      .populate("userId", "profileImage Name") 
       .sort({ createdAt: -1 });
 
     res.status(200).json(posts);
@@ -286,7 +286,7 @@ app.get("/user/:userId", async (req, res) => {
   try {
     const { userId } = req.params;
 
-    const user = await User.findOne({ userId }).populate("posts"); // ✅ Populate posts
+    const user = await User.findOne({ userId }).populate("posts"); 
 
     if (!user) {
       return res.status(404).json({ error: "User not found" });
@@ -300,7 +300,7 @@ app.get("/user/:userId", async (req, res) => {
 });
 
 
-// Get all posts of a user
+
 app.get("/getUserPosts/:userId", async (req, res) => {
   try {
     const { userId } = req.params;
@@ -316,13 +316,13 @@ app.delete("/deletePost/:postId", async (req, res) => {
   try {
     const { postId } = req.params;
 
-    // Find the post and delete it
+    
     const deletedPost = await Post.findByIdAndDelete(postId);
     if (!deletedPost) {
       return res.status(404).json({ error: "Post not found" });
     }
 
-    // Remove post from the user's posts array
+  
     await User.findOneAndUpdate(
       { userId: deletedPost.userId }, 
       { $pull: { posts: postId } }
@@ -344,7 +344,7 @@ app.get("/user/:id", async (req, res) => {
   console.log("Requested user ID:", userId);
 
   try {
-      // 🔥 Fix: Use `findOne({ userId: userId })` instead of `findById(userId)`
+      
       const user = await User.findOne({ userId: userId });
 
       if (!user) {
@@ -361,7 +361,7 @@ app.get("/user/:id", async (req, res) => {
 
 
 
-// Root Route
+
 app.get('/', (req, res) => {
   res.send("Hello World!");
 }); 
@@ -369,7 +369,7 @@ app.get('/', (req, res) => {
 
 
 
-// Start the server
+
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });

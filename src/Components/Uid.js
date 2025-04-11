@@ -10,14 +10,13 @@ const CreateUserId = () => {
   const [userIdAvailable, setUserIdAvailable] = useState(null);
   const [error, setError] = useState("");
   const [profileImage, setProfileImage] = useState(null);
-  const defaultProfileImage = "http://localhost:5000/default-user.png"; // ✅ Default Image Path
-  const [preview, setPreview] = useState(defaultProfileImage); // Set default initially
+  const defaultProfileImage = "http://localhost:5000/default-user.png"; 
+  const [preview, setPreview] = useState(defaultProfileImage); 
 
 
-  // Retrieve user data from the previous page
+ 
   const userData = location.state || {};
 
-  // ✅ Check User ID Availability
   useEffect(() => {
     if (userId.trim()) {
       const checkAvailability = async () => {
@@ -37,19 +36,19 @@ const CreateUserId = () => {
     }
   }, [userId]);
 
-  // ✅ Handle Profile Picture Selection
+
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       setProfileImage(file);
-      setPreview(URL.createObjectURL(file)); // Show selected image
+      setPreview(URL.createObjectURL(file));
     } else {
       setProfileImage(null);
-      setPreview(defaultProfileImage); // Reset to default
+      setPreview(defaultProfileImage); 
     }
   };
 
-  // ✅ Submit User Data
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!userId.trim()) {
@@ -63,7 +62,7 @@ const CreateUserId = () => {
 
     const formData = new FormData();
     formData.append("userId", userId);
-    formData.append("profileImage", profileImage || ""); // Upload image if selected
+    formData.append("profileImage", profileImage || ""); 
     formData.append("userData", JSON.stringify(userData));
 
     try {

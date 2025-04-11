@@ -38,10 +38,6 @@ const Feed = () => {
     fetchPosts();
   }, []);
 
-  const open = () => {
-    window.location.href = `/profile/${loggedInUser.id}`;
-  }
-
   
 
   if (loading) return <p>Loading...</p>;
@@ -53,7 +49,7 @@ const Feed = () => {
     {posts.length > 0 ? (
   posts.map((post) => (
     <div key={post._id} className="post-item">
-      <div onClick={open} className="post-header">
+      <div className="post-header">
         {/* ✅ Show correct user's profile image */}
         <img
           src={post.userId?.profileImage || "/default-profile.png"} 

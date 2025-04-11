@@ -43,7 +43,7 @@ const Profile = () => {
     fetchUserData();
   }, [id, loggedInUser]);
 
-  // ✅ Function to delete a post
+
   const handleDeletePost = async (postId) => {
     try {
       const response = await axios.delete(`http://localhost:5000/deletePost/${postId}`, {
@@ -51,7 +51,7 @@ const Profile = () => {
       });
 
       if (response.status === 200) {
-        // ✅ Remove the deleted post from the UI without a full refresh
+        alert("Post deleted successfully.");
         setUser((prevUser) => ({
           ...prevUser,
           posts: prevUser.posts.filter((post) => post._id !== postId),

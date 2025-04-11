@@ -99,19 +99,3 @@
     cursor: not-allowed;
 }
 
-/* Responsive */
-@media (max-width: 600px) {
-    .create-post {
-        width: 90%;
-        padding: 15px;
-    }
-
-    .create-post h2 {
-        font-size: 20px;
-    }
-
-    .file-upload label {
-        font-size: 14px;
-        padding: 8px 12px;
-    }
-}

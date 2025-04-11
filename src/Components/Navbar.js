@@ -10,7 +10,7 @@ import { useLocation } from "react-router-dom";
 
 const Navbar = () => {
   const { user } = useContext(UserContext);
- console.log("User in Navbar:", user);
+ 
   
 
   const logout = async () => {

@@ -16,7 +16,7 @@ const Create = () => {
   
 
   const onSubmit = (data) => {
-    // Navigate to CreateUserId page with user data
+    
     navigate("/Create-uid", { state: { userData: data } });
   };  
 
