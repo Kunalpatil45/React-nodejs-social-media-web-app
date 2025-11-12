@@ -10,7 +10,7 @@ const CreateUserId = () => {
   const [userIdAvailable, setUserIdAvailable] = useState(null);
   const [error, setError] = useState("");
   const [profileImage, setProfileImage] = useState(null);
-  const defaultProfileImage = "http://localhost:5000/default-user.png"; 
+  const defaultProfileImage = `${process.env.REACT_APP_API_URL}/default-user.png`; 
   const [preview, setPreview] = useState(defaultProfileImage); 
 
 
@@ -21,7 +21,7 @@ const CreateUserId = () => {
     if (userId.trim()) {
       const checkAvailability = async () => {
         try {
-          const response = await axios.get(`http://localhost:5000/check-userid/${userId}`);
+         const response = await axios.get(`${process.env.REACT_APP_API_URL}/check-userid/${userId}`);
           setUserIdAvailable(response.data.available);
         } catch (err) {
           console.error("❌ Error checking user ID:", err);
