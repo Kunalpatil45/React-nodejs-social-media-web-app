@@ -14,7 +14,7 @@ const Login = () => {
 
   const onSubmit = async (data) => {
     try {
-      const response = await axios.post("http://localhost:5000/signin", data, { withCredentials: true });
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/signin`, data, { withCredentials: true });
     
       console.log("Login Response:", response.data.user);
     
@@ -26,6 +26,7 @@ const Login = () => {
         console.error("User data missing in response");
       }
     } catch (error) {
+      alert("login Failed , please try again!!!!");
       console.error("Login failed:", error.response?.data || error.message);
     }
   }    

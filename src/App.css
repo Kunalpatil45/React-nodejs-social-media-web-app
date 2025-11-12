@@ -1,36 +1,46 @@
+/* src/App.css (Responsive Version) */
 
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family:Arial, Helvetica, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-
-
-body{
-color: white;
+body {
+  color: #333; /* Changed default color for better readability */
+  background-color: #f0f2f5; /* Added a light background color */
 }
 
-.mainDiv
-{
+.mainDiv {
   display: flex;
 }
 
 .app-container {
   display: flex;
-  height: 100vh;
-  
+  min-height: 100vh;
 }
 
-.navbar {
-  width: 250px;
-  padding: 5px;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-}
-
+/* Mobile-First (Default) */
 .main-content {
+  width: 100%;
   flex: 1;
-  padding: 20px;
+  padding: 20px 10px 80px 10px; /* Added 80px bottom padding for mobile nav */
   overflow-y: auto;
+  margin-left: 0; /* No margin on mobile */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Tablet & Desktop Styles */
+@media (min-width: 769px) {
+  .main-content {
+    margin-left: 300px; /* Add margin back for the desktop sidebar */
+    padding-bottom: 20px; /* Reset padding */
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+  }
 }

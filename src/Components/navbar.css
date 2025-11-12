@@ -1,100 +1,151 @@
+/* src/Components/navbar.css (Responsive Version) */
 
+/* Mobile-First Styles (Default) */
 .navbar {
-    
-    width: 300px;  
-    height: 100vh;
-    position: relative;
-    background-color: rgb(253, 252, 252);
-    position: fixed;
-    color: #141414;
-    top: 0;
-    left: 0;  
-    padding: 0; 
-    margin: 0;
-    margin-top: 20px;   
-    display: flex;
-    flex-direction: column;
-    font-family: Arial, Helvetica, sans-serif;
-    border-right: 1px solid black;
+  width: 100%;
+  height: 60px; /* Set a fixed height for the bottom bar */
+  position: fixed;
+  color: #141414;
+  bottom: 0; /* Position it at the bottom */
+  left: 0;
+  background-color: rgb(253, 252, 252);
+  display: flex;
+  flex-direction: row; /* Arrange items horizontally */
+  align-items: center;
+  border-top: 1px solid #ddd; /* Use a lighter border */
+  border-right: none;
+  padding: 0 5px;
+  margin: 0;
+  z-index: 1000; /* Ensure it stays on top */
+  font-family: Arial, Helvetica, sans-serif;
 }
-
-
-.main-content {
-    margin-left: 250px; 
-    padding: 20px;
-}
-
 
 .navbar ul {
-    height: 50%;
-    list-style-type: none;
-    display: flex;
-    justify-content:space-around;
-    flex-direction: column;
-    padding: 0;
-    margin: 0;
-    width: 100%;
+  list-style-type: none;
+  display: flex;
+  flex-direction: row; /* Horizontal list */
+  justify-content: space-around;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
 }
 
-
 .navbar ul li {
+  width: auto;
+  height: 100%;
+  margin: 0;
+  border-radius: 0;
+  box-shadow: none;
+  letter-spacing: normal;
+  font-size: 11px; /* Smaller font for mobile */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1; /* Make list items share space equally */
+  padding: 0;
+}
+
+.link {
+  color: black;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column; /* Stack icon and text */
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  margin-left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 5px 0;
+}
+
+.navbar li i {
+  font-size: 22px;
+  color: black;
+}
+
+.navbar li:hover {
+  background-color: #f5f5f5;
+}
+
+.navbar li:hover a {
+  color: black;
+}
+
+.navbar li.active {
+  color: #cc0000;
+}
+
+.nav-link {
+  text-align: center;
+  color: black;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.log-out {
+  display: none; /* Hide the big logout button on mobile */
+}
+
+/* Tablet & Desktop Styles */
+@media (min-width: 769px) {
+  /* Re-apply your original desktop styles here */
+  .navbar {
+    width: 300px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: auto; /* Unset bottom */
+    border-right: 1px solid black;
+    border-top: none;
+    flex-direction: column; /* Stack ul and button vertically */
+    margin-top: 20px;
+    padding: 0;
+  }
+
+  .navbar ul {
+    height: 50%;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 100%;
+  }
+
+  .navbar ul li {
     width: 200px;
     margin: auto;
     border-radius: 20px;
     height: 40px;
-    text-decoration: none;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     letter-spacing: 2px;
     line-height: 10px;
-    padding: 10px 15px; 
+    padding: 10px 15px;
     font-size: 25px;
-    cursor: pointer;
-    display: flex;  
-    align-items: center;
+    flex: 0 1 auto; /* Reset flex property */
+  }
+
+  .link {
+    flex-direction: row; /* Icon and text side-by-side */
     gap: 5px;
-}
-
-
-
-.link {
-    color: black;
     margin-left: 20px;
-    text-decoration: none;
-}
+    height: auto;
+    width: auto;
+    padding: 0;
+  }
 
+  .navbar li i {
+    font-size: 22px;
+  }
 
-.navbar li i {
-    font-size: 22px; 
-    color: black;
-}
-
-
-.navbar li a {
-    
-    color: black; 
-    font-size: 18px;  
-    flex-grow: 1;  
-    transition: background-color 0.2s ease; 
-}
-
-
-.navbar li:hover{
-    background-color: #b2b2b2; 
-    
-}
-
-.navbar li:hover a {
-    color: rgb(163, 156, 156);
-}
-
-
-
-.navbar li.active {
-    color: #cc0000;
-}
-
-
-.log-out {
+  .log-out {
+    display: block; /* Show the logout button again */
     width: 80%;
     height: 35px;
     background-color: #ff4d4d;
@@ -104,20 +155,12 @@
     font-size: 16px;
     font-weight: bold;
     margin: 10px auto;
-    display: block;
     text-align: center;
     border-radius: 5px;
     transition: background-color 0.2s ease;
-}
+  }
 
-.nav-link {
-    text-align: center;
-    color: black;
-    text-decoration: none;
-}
-
-.log-out:hover {
+  .log-out:hover {
     background-color: #cc0000;
+  }
 }
-
-

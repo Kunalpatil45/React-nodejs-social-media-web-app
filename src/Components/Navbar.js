@@ -15,7 +15,7 @@ const Navbar = () => {
 
   const logout = async () => {
     try {
-      await fetch("http://localhost:5000/logout", { 
+      await fetch(`${process.env.REACT_APP_API_URL}/logout`, { 
         method: "POST", 
         credentials: "include" 
       });

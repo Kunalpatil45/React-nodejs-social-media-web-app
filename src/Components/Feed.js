@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { UserContext } from "../context/UserContext";
+/* import { UserContext } from "../context/UserContext"; */
 
 import "./Feed.css";
 
 const Feed = () => {
   
-  const { user:loggedInUser } = useContext(UserContext);
+  /* const { user } = useContext(UserContext); */
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -15,7 +15,7 @@ const Feed = () => {
     
     const fetchPosts = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/posts", {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/posts`, {
           withCredentials: true,
         });
 

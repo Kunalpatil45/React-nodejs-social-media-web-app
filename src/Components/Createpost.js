@@ -50,7 +50,7 @@ const CreatePost = () => {
     setMessage("");
 
     try {
-      await axios.post("http://localhost:5000/createPost", formData, {
+      await axios.post(`${process.env.REACT_APP_API_URL}/createPost`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       setMessage("Post created successfully!");

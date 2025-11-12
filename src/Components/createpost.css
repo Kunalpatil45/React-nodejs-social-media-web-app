@@ -1,101 +1,102 @@
+/* src/Components/createpost.css (Responsive Version) */
+
 .create-post {
-    width: 100%;
-    max-width: 500px;
-    min-height: 95vh;
-    margin: 20px 150px;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    background: #fff;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  width: 100%;
+  max-width: 500px;
+  min-height: 95vh;
+  margin: 20px auto; /* Changed margin to be centered */
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .create-post h2 {
-    margin-bottom: 15px;
-    font-size: 24px;
-    font-weight: bold;
-    text-align: center;
+  margin-bottom: 15px;
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
 }
 
 .create-post textarea {
-    width: 100%;
-    height: 100px;
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 16px;
-    resize: none;
-    transition: 0.3s;
+  width: 100%;
+  height: 100px;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  resize: none;
+  transition: 0.3s;
 }
 
 .create-post textarea:focus {
-    border-color: #007bff;
-    outline: none;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
 }
 
 /* File Upload Button */
 .file-upload {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    margin-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-top: 12px;
 }
 
 .file-upload label {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background 0.3s ease;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
+  background-color: #007bff;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .file-upload label:hover {
-    background-color: #0056b3;
+  background-color: #0056b3;
 }
 
 .file-upload input {
-    display: none;
+  display: none;
 }
 
 .image-preview img {
-    width: 100%;
-    margin-top: 15px;
-    border-radius: 8px;
-    max-height: 300px;
-    object-fit: cover;
-    border: 1px solid #ddd;
+  width: 100%;
+  margin-top: 15px;
+  border-radius: 8px;
+  max-height: 300px;
+  object-fit: cover;
+  border: 1px solid #ddd;
 }
 
 .create-post button {
-    width: 100%;
-    padding: 12px;
-    margin-top: 15px;
-    background: #007bff;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.3s ease;
+  width: 100%;
+  padding: 12px;
+  margin-top: 15px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
 }
 
 .create-post button:hover {
-    background: #0056b3;
+  background: #0056b3;
 }
 
 .create-post button:disabled {
-    background: gray;
-    cursor: not-allowed;
+  background: gray;
+  cursor: not-allowed;
 }
-

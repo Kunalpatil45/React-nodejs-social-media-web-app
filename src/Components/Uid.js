@@ -66,7 +66,7 @@ const CreateUserId = () => {
     formData.append("userData", JSON.stringify(userData));
 
     try {
-      const response = await axios.post("http://localhost:5000/signup", formData, {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/signup`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
@@ -77,6 +77,7 @@ const CreateUserId = () => {
         navigate("/login");
       }
     } catch (error) {
+  
       setError(error.response?.data?.message || "❌ Something went wrong");
     }
   };
@@ -87,7 +88,7 @@ const CreateUserId = () => {
       <form onSubmit={handleSubmit}>
         <h2>Upload Profile Picture</h2>
         <div className="profilepreview">
-          <img src={preview}  height={150} width={150} />
+          <img src={preview}  height={150} width={150} alt="."/>
         </div>
         <input type="file" accept="image/*" className="profilebtn" onChange={handleFileChange} style={{ display: "none" }} id="fileInput" />
         <button type="button" onClick={() => document.getElementById("fileInput").click()}>Upload Profile Picture</button>

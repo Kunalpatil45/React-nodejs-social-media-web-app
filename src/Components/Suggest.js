@@ -8,7 +8,7 @@ const Suggest = () => {
   useEffect(() => {
     const fetchRecentUsers = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/recent-users"); 
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/recent-users`); 
         if (response.status === 200) {
           setRecentUsers(response.data);
         }
@@ -29,7 +29,7 @@ const Suggest = () => {
 
   return (
     <div className="boxx">
-      <h2>Recently Joined</h2>
+      <h2>Popular Accounts</h2>
       {recentUsers.length > 0 ? (
         <ul className="recent-users">
           {recentUsers.map((user) => (
