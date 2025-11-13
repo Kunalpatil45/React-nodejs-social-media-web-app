@@ -4,7 +4,7 @@ import { UserContext } from "../context/UserContext";
 
 const MobileNav = () => {
   const { user } = useContext(UserContext);
-  const location = useLocation();
+  //const location = useLocation();
 
   return (
     <div
