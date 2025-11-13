@@ -1,4 +1,4 @@
-// App.js (CLEAN + FIXED)
+// App.js
 import React from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 
@@ -13,17 +13,17 @@ import Createpost from "./Components/Createpost";
 import Suggestion from "./Components/Suggest";
 import MobileNav from "./Components/MobileNav";
 
+import ProtectedRoute from "./Components/ProtectedRoutes"; // ✅ IMPORTANT
+
 // ---------------------------
-// Bootstrap-Friendly Layouts
+// Layouts
 // ---------------------------
 
 const MainLayout = ({ children }) => (
   <div className="container-fluid">
     <div className="row justify-content-center">
 
-      <div className="col-12 col-md-10 col-lg-8 mt-3">
-        {children}
-      </div>
+      <div className="col-12 col-md-10 col-lg-8 mt-3">{children}</div>
 
       <div className="col-12 col-md-10 col-lg-3 mt-3 d-none d-lg-block">
         <Suggestion />
@@ -38,9 +38,7 @@ const AuthLayout = ({ children }) => (
     className="container d-flex justify-content-center align-items-center"
     style={{ minHeight: "100vh" }}
   >
-    <div className="col-12 col-md-6 col-lg-4">
-      {children}
-    </div>
+    <div className="col-12 col-md-6 col-lg-4">{children}</div>
   </div>
 );
 
@@ -61,15 +59,72 @@ const App = () => {
       {!hideNavbar && <Navbar />}
 
       <Routes>
-        <Route path="/finduser" element={<MainLayout><Finduser /></MainLayout>} />
-        <Route path="/login" element={<AuthLayout><SignIn /></AuthLayout>} />
-        <Route path="/createpost" element={<MainLayout><Createpost /></MainLayout>} />
-        <Route path="/create-uid" element={<AuthLayout><Uid /></AuthLayout>} />
-        <Route path="/create" element={<AuthLayout><Create /></AuthLayout>} />
-        <Route path="/" element={<MainLayout><Feed /></MainLayout>} />
-        <Route path="/profile/:id" element={<MainLayout><Profile /></MainLayout>} />
-        <Route path="/suggestion" element={<MainLayout><Suggestion /></MainLayout>} />
+
+        {/* PUBLIC ROUTES */}
+        <Route
+          path="/login"
+          element={<AuthLayout><SignIn /></AuthLayout>}
+        />
+
+        <Route
+          path="/create"
+          element={<AuthLayout><Create /></AuthLayout>}
+        />
+
+        <Route
+          path="/create-uid"
+          element={<AuthLayout><Uid /></AuthLayout>}
+        />
+
+        {/* PROTECTED ROUTES */}
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <MainLayout><Feed /></MainLayout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/createpost"
+          element={
+            <ProtectedRoute>
+              <MainLayout><Createpost /></MainLayout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/profile/:id"
+          element={
+            <ProtectedRoute>
+              <MainLayout><Profile /></MainLayout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/finduser"
+          element={
+            <ProtectedRoute>
+              <MainLayout><Finduser /></MainLayout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/suggestion"
+          element={
+            <ProtectedRoute>
+              <MainLayout><Suggestion /></MainLayout>
+            </ProtectedRoute>
+          }
+        />
+
       </Routes>
+
+      {/* MOBILE NAV ALWAYS SHOWN */}
       <MobileNav />
     </>
   );

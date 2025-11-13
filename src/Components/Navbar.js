@@ -64,13 +64,13 @@ const Navbar = () => {
               </Link>
             </li>
 
-            {user && (
+            
               <li className="nav-item">
                 <Link className="nav-link" to="/createpost">
-                  <i className="ri-add-circle-line me-1"></i> Create
+                  <i className="ri-add-circle-line me-1"></i> Create Post
                 </Link>
               </li>
-            )}
+            
 
             {user && (
               <li className="nav-item">
