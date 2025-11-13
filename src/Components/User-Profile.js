@@ -46,7 +46,7 @@ const Profile = () => {
 
   const handleDeletePost = async (postId) => {
     try {
-      const response = await axios.delete(`http://localhost:5000/deletePost/${postId}`, {
+      const response = await axios.delete(`${process.env.REACT_APP_API_URL}/deletePost/${postId}`, {
         withCredentials: true,
       });
 
