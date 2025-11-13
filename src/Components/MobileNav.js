@@ -1,10 +1,9 @@
 import React, { useContext } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { UserContext } from "../context/UserContext";
 
 const MobileNav = () => {
   const { user } = useContext(UserContext);
-  //const location = useLocation();
 
   return (
     <div
@@ -23,27 +22,23 @@ const MobileNav = () => {
         zIndex: 999,
       }}
     >
-      {/* HOME */}
-      <Link to="/" className="text-dark text-center" style={{ textDecoration: "none" }}>
-        <i className="ri-home-4-line" style={{ fontSize: "24px" }}></i>
+      <Link to="/" className="text-dark" style={{ textDecoration: "none" }}>
+        <i className="ri-home-4-line" style={{ fontSize: "24px" }} />
       </Link>
 
-      {/* SEARCH */}
-      <Link to="/finduser" className="text-dark text-center" style={{ textDecoration: "none" }}>
-        <i className="ri-search-line" style={{ fontSize: "24px" }}></i>
+      <Link to="/finduser" className="text-dark" style={{ textDecoration: "none" }}>
+        <i className="ri-search-line" style={{ fontSize: "24px" }} />
       </Link>
 
-      {/* CREATE */}
       {user && (
-        <Link to="/createpost" className="text-dark text-center" style={{ textDecoration: "none" }}>
-          <i className="ri-add-circle-line" style={{ fontSize: "26px" }}></i>
+        <Link to="/createpost" className="text-dark" style={{ textDecoration: "none" }}>
+          <i className="ri-add-circle-line" style={{ fontSize: "26px" }} />
         </Link>
       )}
 
-      {/* PROFILE */}
       {user && (
-        <Link to={`/profile/${user.id}`} className="text-dark text-center" style={{ textDecoration: "none" }}>
-          <i className="ri-user-line" style={{ fontSize: "24px" }}></i>
+        <Link to={`/profile/${user.id}`} className="text-dark" style={{ textDecoration: "none" }}>
+          <i className="ri-user-line" style={{ fontSize: "24px" }} />
         </Link>
       )}
     </div>
