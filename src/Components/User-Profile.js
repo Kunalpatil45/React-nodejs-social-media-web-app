@@ -1,31 +1,31 @@
-  import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { UserContext } from "../context/UserContext";
-import "./profile.css";
 
 const Profile = () => {
   const { id } = useParams();
   const { user: loggedInUser } = useContext(UserContext);
+
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const userId = id || loggedInUser?.userId;
+
     if (!userId) {
       setError("User ID is missing.");
       setLoading(false);
       return;
     }
 
-    console.log("Logged in user:", loggedInUser?.id);
-    console.log("user?.userId:", userId);
     const fetchUserData = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/user/${userId}`, {
-          withCredentials: true,
-        });
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_URL}/user/${userId}`,
+          { withCredentials: true }
+        );
 
         if (response.status === 200) {
           setUser(response.data);
@@ -33,7 +33,7 @@ const Profile = () => {
           setError("User not found.");
         }
       } catch (err) {
-        console.error("Error fetching user data:", err);
+        console.error("User fetch error:", err);
         setError("Failed to fetch user data.");
       } finally {
         setLoading(false);
@@ -43,90 +43,134 @@ const Profile = () => {
     fetchUserData();
   }, [id, loggedInUser]);
 
-
   const handleDeletePost = async (postId) => {
     try {
-      const response = await axios.delete(`${process.env.REACT_APP_API_URL}/deletePost/${postId}`, {
-        withCredentials: true,
-      });
+      const response = await axios.delete(
+        `${process.env.REACT_APP_API_URL}/deletePost/${postId}`,
+        { withCredentials: true }
+      );
 
       if (response.status === 200) {
-        alert("Post deleted successfully.");
-        setUser((prevUser) => ({
-          ...prevUser,
-          posts: prevUser.posts.filter((post) => post._id !== postId),
+        setUser((prev) => ({
+          ...prev,
+          posts: prev.posts.filter((p) => p._id !== postId),
         }));
       }
     } catch (error) {
-      console.error("Error deleting post:", error);
-      alert("Failed to delete the post.");
+      alert("Failed to delete post.");
+      console.error(error);
     }
   };
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p className="error">{error}</p>;
+  if (loading)
+    return (
+      <div className="text-center mt-5">
+        <div className="spinner-border"></div>
+      </div>
+    );
+
+  if (error)
+    return (
+      <p className="text-danger fw-bold text-center mt-4">{error}</p>
+    );
 
   return (
-    <div className="profileContainer">
-      <div className="user-profile-image">
-        <img 
-          src={user?.profileImage || "/default-image.png"} 
-          alt="Profile" 
-          className="profile-pic"
-        />
+    <div className="container mt-4">
+
+      {/* Profile Section */}
+      <div className="row justify-content-center mb-4">
+        <div className="col-12 col-md-10 col-lg-8 text-center">
+
+          <img
+            src={user?.profileImage || "/default-image.png"}
+            alt="Profile"
+            className="rounded-circle mb-3"
+            style={{ width: 120, height: 120, objectFit: "cover" }}
+          />
+
+          <h4 className="fw-bold">@{user?.userId}</h4>
+          <h5 className="text-muted">{user?.Name}</h5>
+
+          <div className="d-flex justify-content-center gap-4 mt-3">
+            <div className="text-center">
+              <h6 className="fw-bold">{user?.posts?.length || 0}</h6>
+              <p className="text-muted small m-0">Posts</p>
+            </div>
+
+            <div className="text-center">
+              <h6 className="fw-bold">{user?.followers || 0}</h6>
+              <p className="text-muted small m-0">Followers</p>
+            </div>
+
+            <div className="text-center">
+              <h6 className="fw-bold">{user?.following || 0}</h6>
+              <p className="text-muted small m-0">Following</p>
+            </div>
+          </div>
+
+        </div>
       </div>
 
-      <p className="User-id">{user?.userId || "No ID available"}</p>
-      <p className="User-name">{user?.Name || "No name available"}</p>
-
-      <div className="user-details">
-        <div className="user-post">{user?.posts?.length || 0} Posts</div>
-        <div className="user-follower">{user?.followers || 0} Followers</div>
-        <div className="user-following">{user?.following || 0} Following</div>
-      </div>
       <hr />
-      <h2>Posts</h2>
-      <div className="user-posts">
+
+      {/* Posts Section */}
+      <h4 className="fw-bold text-center mb-3">Posts</h4>
+
+      <div className="row g-4 justify-content-center">
+
         {user?.posts?.length > 0 ? (
-          <div className="post-grid">
-            {user.posts.map((post) => (
-              <div key={post._id} className="post-item">
-                <div className="post-header">
-                  <img
-                    src={user?.profileImage || "/default-profile.png"}
-                    alt="User Profile"
-                    className="post-profile-image"
-                  />
-                  <p>{user.userId}</p>
-                  
-                  
+          user.posts.map((post) => (
+            <div key={post._id} className="col-12 col-md-6 col-lg-4">
+
+              <div className="card shadow-sm">
+
+                {/* Card Header */}
+                <div className="card-header d-flex justify-content-between align-items-center">
+                  <div className="d-flex align-items-center">
+                    <img
+                      src={user?.profileImage || "/default-profile.png"}
+                      alt="User"
+                      className="rounded-circle me-2"
+                      style={{ width: 45, height: 45, objectFit: "cover" }}
+                    />
+                    <strong>@{user?.userId}</strong>
+                  </div>
+
                   {loggedInUser?.id === user?.userId && (
-                    <button onClick={() => handleDeletePost(post._id)}>
+                    <button
+                      className="btn btn-sm btn-outline-danger"
+                      onClick={() => handleDeletePost(post._id)}
+                    >
                       <i className="fa-solid fa-trash"></i>
                     </button>
                   )}
                 </div>
 
-                <div className="imgcontainer">
-                  <img
-                    src={post.image || "/placeholder.png"}
-                    alt="Post"
-                    className="post-image"
-                  />
-                </div>
+                {/* Post Image */}
+                <img
+                  src={post.image || "/placeholder.png"}
+                  alt="Post"
+                  className="img-fluid"
+                  style={{ maxHeight: 350, objectFit: "cover" }}
+                />
 
-                <div className="post-footer">
-                  <p className="description">
-                    {user.userId} {post.text}
+                {/* Caption */}
+                <div className="card-body">
+                  <p className="mb-0">
+                    <span className="fw-bold">@{user.userId}: </span>
+                    {post.text}
                   </p>
                 </div>
+
               </div>
-            ))}
-          </div>
+
+            </div>
+          ))
         ) : (
-          <p>No posts available.</p>
+          <p className="text-center text-muted">No posts available.</p>
         )}
       </div>
+
     </div>
   );
 };

@@ -1,120 +1,125 @@
-import React from 'react';
+import React from "react";
 import { useForm } from "react-hook-form";
-import { Link , useNavigate } from "react-router-dom";
-import './Create.css';
-
-
+import { Link, useNavigate } from "react-router-dom";
 
 const Create = () => {
   const navigate = useNavigate();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
 
-  
+  const { register, handleSubmit, formState: { errors } } = useForm();
 
   const onSubmit = (data) => {
-    
-    navigate("/Create-uid", { state: { userData: data } });
-  };  
+    navigate("/create-uid", { state: { userData: data } });
+  };
 
   return (
-    <>
-    
-      <h1 className='webname-signup'>Poster</h1>
-      <div className="Signup-container">
-        <h1>Create a New Account</h1>
-        <hr />
+    <div
+      className="d-flex justify-content-center align-items-center"
+      style={{
+        minHeight: "100vh",
+        background: "linear-gradient(135deg,#2575fc 0%,#6a11cb 100%)",
+        padding: "20px"
+      }}
+    >
+      <div
+        className="card shadow-sm p-4"
+        style={{
+          width: "100%",
+          maxWidth: "650px",   // 🔥 WIDER CARD
+          borderRadius: "15px",
+          background: "#fff",
+        }}
+      >
+        <h2 className="fw-bold text-center mb-3">Create Account</h2>
 
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className='nameContainer'>
-            <div className="userdetails">
-            <div className='firstName'>
+
+          {/* NAME + DOB IN ONE ROW */}
+          <div className="row">
+            <div className="col-md-6 mb-3">
+              <label className="form-label">Full Name</label>
               <input
-                className='Name-inputs'
-                type="text"
-                placeholder='First Name'
+                className="form-control"
                 {...register("Name", { required: "Name is required" })}
+                placeholder="Enter full name"
               />
-              {errors.Name && <p className="error">{errors.Name.message}</p>}
+              {errors.Name && <p className="text-danger small">{errors.Name.message}</p>}
             </div>
 
-           
-          </div>
-
-          <div className='nameContainer'>
-            <div className='Birth'>
-              <label htmlFor="dob">Date Of Birth</label><br />
+            <div className="col-md-6 mb-3">
+              <label className="form-label">Date of Birth</label>
               <input
-                className='dob'
-                name="dob"
                 type="date"
+                className="form-control"
                 {...register("dob", { required: "Date of Birth is required" })}
               />
-              {errors.dob && <p className="error">{errors.dob.message}</p>}
+              {errors.dob && <p className="text-danger small">{errors.dob.message}</p>}
             </div>
+          </div>
 
-            <div className='gender-container'>
-              <label htmlFor="gender">Gender</label><br />
+          {/* GENDER + EMAIL IN ONE ROW */}
+          <div className="row">
+            <div className="col-md-6 mb-3">
+              <label className="form-label">Gender</label>
               <select
-                name="gender"
-                className="gender"
+                className="form-select"
                 {...register("gender", { required: "Gender is required" })}
               >
                 <option value="">Select Gender</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Other">Other</option>
+                <option>Male</option>
+                <option>Female</option>
+                <option>Other</option>
               </select>
-              {errors.gender && <p className="error">{errors.gender.message}</p>}
+              {errors.gender && <p className="text-danger small">{errors.gender.message}</p>}
+            </div>
+
+            <div className="col-md-6 mb-3">
+              <label className="form-label">Email</label>
+              <input
+                type="email"
+                className="form-control"
+                placeholder="Enter email"
+                {...register("email", {
+                  required: "Email is required",
+                  pattern: {
+                    value: /^[^@\s]+@[^@\s]+\.[^@\s]+$/,
+                    message: "Invalid email"
+                  }
+                })}
+              />
+              {errors.email && <p className="text-danger small">{errors.email.message}</p>}
             </div>
           </div>
 
-          <div className='ids'>
+          {/* PASSWORD (FULL ROW) */}
+          <div className="mb-3">
+            <label className="form-label">Password</label>
             <input
-              className='ids-inputs'
-              type="email"
-              placeholder='Email ID'
-              {...register("email", {
-                required: "Email is required",
-                pattern: {
-                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                  message: "Invalid email format",
-                },
-              })}
-            />
-            {errors.email && <p className="error">{errors.email.message}</p>}
-
-            <input
-              className='ids-inputs'
               type="password"
-              placeholder='Create Password'
+              className="form-control"
+              placeholder="Create password"
               {...register("password", {
                 required: "Password is required",
-                minLength: {
-                  value: 6,
-                  message: "Password must be at least 6 characters",
-                },
-                maxLength: {
-                  value: 12,
-                  message: "Password must be no more than 12 characters",
-                },
+                minLength: { value: 6, message: "Min 6 chars" },
+                maxLength: { value: 12, message: "Max 12 chars" }
               })}
             />
-            {errors.password && <p className="error">{errors.password.message}</p>}
+            {errors.password && (
+              <p className="text-danger small">{errors.password.message}</p>
+            )}
           </div>
-          </div>
-          
-          <button type="submit">Create Account</button>
 
-          <p>Already Have an account? <Link to="/login">Login Here</Link></p>
+          {/* BUTTON */}
+          <button className="btn btn-primary w-100 btn-lg mt-2">
+            Create Account
+          </button>
+
+          <p className="text-center mt-3">
+            Already have an account? <Link to="/login">Login</Link>
+          </p>
         </form>
       </div>
-    </>
+    </div>
   );
 };
 
 export default Create;
-

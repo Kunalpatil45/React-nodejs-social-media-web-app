@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./Finduser.css";
 
 const FindUser = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!searchQuery.trim()) {
-      setUsers([]); 
+      setUsers([]);
       setError("");
       return;
     }
@@ -22,64 +21,119 @@ const FindUser = () => {
       setError("");
 
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/searchUser/${searchQuery}`);
-        if (response.data.length === 0) {
+        const q = encodeURIComponent(searchQuery.trim());
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_URL}/searchUser/${q}`
+        );
+
+        if (!Array.isArray(response.data) || response.data.length === 0) {
+          setUsers([]);
           setError("No users found.");
+        } else {
+          setUsers(response.data);
         }
-        setUsers(response.data);
       } catch (err) {
-        setError("Failed to fetch users.");
         console.error("Search error:", err);
+        setUsers([]);
+        setError("Failed to fetch users. Try again.");
       } finally {
         setLoading(false);
       }
     };
 
-    const debounceTimeout = setTimeout(fetchUsers, 500); 
-
-    return () => clearTimeout(debounceTimeout);
+    const id = setTimeout(fetchUsers, 500); // debounce 500ms
+    return () => clearTimeout(id);
   }, [searchQuery]);
 
- 
   const handleUserClick = (userId) => {
-    navigate(`/profile/${userId}`); 
+    navigate(`/profile/${userId}`);
   };
 
   return (
-    <div className="finduser">
-      <div className="search-box">
-      <input 
-        type="text" 
-        placeholder="Enter User ID" 
-        value={searchQuery} 
-        onChange={(e) => setSearchQuery(e.target.value)}
-        
-      />
+    <div className="container mt-4">
+      <div className="row justify-content-center">
+        <div className="col-12 col-md-8 col-lg-6">
 
-      </div>
-      
-      
-      <hr />
+          {/* Search box */}
+          <div className="input-group mb-3">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Search by user ID or name..."
+              aria-label="Search users"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <button
+              className="btn btn-outline-secondary"
+              type="button"
+              onClick={() => setSearchQuery("")}
+              title="Clear"
+            >
+              Clear
+            </button>
+          </div>
 
-      {loading && <p>Loading...</p>}
-      {error && <p className="error">{error}</p>}
+          <hr />
 
-      
-      <div className="user-list">
-        {users.length > 0 && (
-          <ul>
-            {users.map((user) => (
-              <li key={user.userId} onClick={() => handleUserClick(user.userId)}>
-                <img src={user.profileImage} alt="Profile" width="80" height="80" />
-                <div className="user-info">
-                <div>{user.Name} </div>
-                <p>@{user.userId}</p>
-                </div>
-                
-              </li>
-            ))}
-          </ul>
-        )}
+          {/* Loading / Error */}
+          {loading && (
+            <div className="text-center my-3">
+              <div className="spinner-border" role="status" aria-hidden="true"></div>
+              <div className="small text-muted mt-2">Searching...</div>
+            </div>
+          )}
+
+          {error && !loading && (
+            <div className="alert alert-warning py-2">{error}</div>
+          )}
+
+          {/* Results */}
+          {!loading && users.length > 0 && (
+            <ul className="list-group">
+              {users.map((user) => (
+                <li
+                  key={user.userId}
+                  className="list-group-item list-group-item-action d-flex align-items-center"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => handleUserClick(user.userId)}
+                >
+                  <img
+                    src={user.profileImage || "/default-profile.png"}
+                    alt={user.Name || user.userId}
+                    className="rounded-circle me-3"
+                    style={{ width: 64, height: 64, objectFit: "cover" }}
+                  />
+
+                  <div className="flex-grow-1">
+                    <div className="fw-semibold">
+                      {user.Name || "Unknown"}
+                    </div>
+                    <div className="text-muted">@{user.userId}</div>
+                  </div>
+
+                  <div className="text-end">
+                    <button
+                      className="btn btn-sm btn-outline-primary"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/profile/${user.userId}`);
+                      }}
+                    >
+                      View
+                    </button>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+
+          {/* No results message when empty and no error */}
+          {!loading && !error && users.length === 0 && searchQuery.trim() !== "" && (
+            <p className="text-center text-muted">No users match your search.</p>
+          )}
+
+        </div>
       </div>
     </div>
   );

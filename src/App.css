@@ -12,7 +12,7 @@ body {
   background-color: #f0f2f5; /* Added a light background color */
 }
 
-.mainDiv {
+/* .mainDiv {
   display: flex;
 }
 
@@ -21,26 +21,26 @@ body {
   min-height: 100vh;
 }
 
-/* Mobile-First (Default) */
+
 .main-content {
   width: 100%;
   flex: 1;
-  padding: 20px 10px 80px 10px; /* Added 80px bottom padding for mobile nav */
+  padding: 20px 10px 80px 10px; 
   overflow-y: auto;
-  margin-left: 0; /* No margin on mobile */
+  margin-left: 0; 
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-/* Tablet & Desktop Styles */
+
 @media (min-width: 769px) {
   .main-content {
-    margin-left: 300px; /* Add margin back for the desktop sidebar */
-    padding-bottom: 20px; /* Reset padding */
+    margin-left: 300px;
+    padding-bottom: 20px;
     flex-direction: row;
     justify-content: center;
     align-items: flex-start;
     gap: 20px;
   }
-}
+} */
