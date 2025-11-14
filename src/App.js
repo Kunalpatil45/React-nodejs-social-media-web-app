@@ -13,7 +13,12 @@ import Createpost from "./Components/Createpost";
 import Suggestion from "./Components/Suggest";
 import MobileNav from "./Components/MobileNav";
 
-import ProtectedRoute from "./Components/ProtectedRoutes"; // ✅ IMPORTANT
+import ProtectedRoute from "./Components/ProtectedRoutes";
+
+// NEW Forgot Password Pages
+import ForgotPassword from "./pages/ForgotPassword";
+import VerifyOtp from "./pages/VerifyOtp";
+import ResetPassword from "./pages/ResetPassword";
 
 // ---------------------------
 // Layouts
@@ -22,13 +27,11 @@ import ProtectedRoute from "./Components/ProtectedRoutes"; // ✅ IMPORTANT
 const MainLayout = ({ children }) => (
   <div className="container-fluid">
     <div className="row justify-content-center">
-
       <div className="col-12 col-md-10 col-lg-8 mt-3">{children}</div>
 
       <div className="col-12 col-md-10 col-lg-3 mt-3 d-none d-lg-block">
         <Suggestion />
       </div>
-
     </div>
   </div>
 );
@@ -52,14 +55,16 @@ const App = () => {
   const hideNavbar =
     location.pathname === "/login" ||
     location.pathname === "/create" ||
-    location.pathname === "/create-uid";
+    location.pathname === "/create-uid" ||
+    location.pathname === "/forgot-password" ||
+    location.pathname === "/verify-otp" ||
+    location.pathname === "/reset-password";
 
   return (
     <>
       {!hideNavbar && <Navbar />}
 
       <Routes>
-
         {/* PUBLIC ROUTES */}
         <Route
           path="/login"
@@ -74,6 +79,22 @@ const App = () => {
         <Route
           path="/create-uid"
           element={<AuthLayout><Uid /></AuthLayout>}
+        />
+
+        {/* FORGOT PASSWORD ROUTES */}
+        <Route
+          path="/forgot-password"
+          element={<AuthLayout><ForgotPassword /></AuthLayout>}
+        />
+
+        <Route
+          path="/verify-otp"
+          element={<AuthLayout><VerifyOtp /></AuthLayout>}
+        />
+
+        <Route
+          path="/reset-password"
+          element={<AuthLayout><ResetPassword /></AuthLayout>}
         />
 
         {/* PROTECTED ROUTES */}

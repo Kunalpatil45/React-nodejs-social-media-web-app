@@ -1,0 +1,78 @@
+import React from "react";
+import { useForm } from "react-hook-form";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
+const ResetPassword = () => {
+  const navigate = useNavigate();
+  const { register, handleSubmit, formState: { errors } } = useForm();
+
+  const email = localStorage.getItem("resetEmail");
+
+  const onSubmit = async ({ newPassword }) => {
+    try {
+      const res = await axios.post(
+        `${process.env.REACT_APP_API_URL}/reset-password`,
+        { email, newPassword }
+      );
+
+      if (res.data.success) {
+        alert("Password updated successfully! Please login.");
+        localStorage.removeItem("resetEmail");
+        navigate("/login");
+      }
+    } catch (err) {
+      alert("Failed to update password");
+    }
+  };
+
+  return (
+    <div
+      className="d-flex justify-content-center align-items-center"
+      style={{
+        minHeight: "100vh",
+        background: "linear-gradient(135deg,#2575fc 0%,#6a11cb 100%)",
+        padding: "20px",
+      }}
+    >
+      <div
+        className="card shadow-lg p-4"
+        style={{
+          maxWidth: "420px",
+          width: "100%",
+          borderRadius: "15px",
+        }}
+      >
+        <h2 className="fw-bold text-center mb-3">Reset Password</h2>
+        <p className="text-center text-muted mb-4">
+          Set a new password for <br />
+          <strong>{email}</strong>
+        </p>
+
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="mb-3">
+            <label className="form-label">New Password</label>
+            <input
+              className="form-control form-control-lg"
+              type="password"
+              placeholder="Enter new password"
+              {...register("newPassword", {
+                required: "Password is required",
+                minLength: { value: 6, message: "Minimum 6 characters required" },
+              })}
+            />
+            {errors.newPassword && (
+              <p className="text-danger small mt-1">{errors.newPassword.message}</p>
+            )}
+          </div>
+
+          <button className="btn btn-primary w-100 btn-lg">
+            Update Password
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default ResetPassword;

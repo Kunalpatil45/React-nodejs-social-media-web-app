@@ -75,6 +75,15 @@ const SignIn = () => {
                 {errors.password.message}
               </p>
             )}
+
+            {/* ===================== */}
+            {/*   FORGOT PASSWORD     */}
+            {/* ===================== */}
+            <p className="text-center mt-2">
+              <Link to="/forgot-password" className="text-decoration-none">
+                Forgot Password?
+              </Link>
+            </p>
           </div>
 
           <button className="btn btn-primary w-100 btn-lg">Login</button>
