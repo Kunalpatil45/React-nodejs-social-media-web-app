@@ -6,23 +6,34 @@ import { UserContext } from "../context/UserContext";
 const CreatePost = () => {
   const { user } = useContext(UserContext);
   const [text, setText] = useState("");
-  const [image, setImage] = useState(null);
+  const [file, setFile] = useState(null);
   const [preview, setPreview] = useState("");
+  const [previewType, setPreviewType] = useState(""); // image | video
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
   const fileInputRef = useRef(null);
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    setImage(file);
+  const handleFileChange = (e) => {
+    const selected = e.target.files[0];
+    if (!selected) return;
 
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => setPreview(reader.result);
-      reader.readAsDataURL(file);
+    setFile(selected);
+
+    // Detect type
+    if (selected.type.startsWith("image")) {
+      setPreviewType("image");
+    } else if (selected.type.startsWith("video")) {
+      setPreviewType("video");
+    } else {
+      alert("❌ Only Images or Videos allowed!");
+      return;
     }
+
+    // Preview
+    const previewUrl = URL.createObjectURL(selected);
+    setPreview(previewUrl);
   };
 
   const handleSubmit = async (e) => {
@@ -33,11 +44,15 @@ const CreatePost = () => {
       return;
     }
 
+    if (!file) {
+      setMessage("❗ Please select an image or video.");
+      return;
+    }
+
     const formData = new FormData();
     formData.append("userId", user.id);
     formData.append("text", text);
-
-    if (image) formData.append("image", image);
+    formData.append("media", file);  // IMPORTANT: MUST MATCH BACKEND FIELD
 
     setLoading(true);
     setMessage("");
@@ -53,10 +68,11 @@ const CreatePost = () => {
 
       setMessage("✅ Post created successfully!");
       setText("");
-      setImage(null);
+      setFile(null);
       setPreview("");
 
-      navigate("/profile/" + user.id);
+      navigate(`/profile/${user.id}`);
+
     } catch (err) {
       console.error("Post creation error:", err);
       setMessage("❌ Failed to create post.");
@@ -82,7 +98,6 @@ const CreatePost = () => {
 
             <form onSubmit={handleSubmit}>
 
-              {/* Caption Textarea */}
               <div className="mb-3">
                 <textarea
                   className="form-control"
@@ -96,35 +111,42 @@ const CreatePost = () => {
               {/* Hidden File Input */}
               <input
                 type="file"
-                accept="image/*"
-                onChange={handleImageChange}
+                accept="image/*,video/*"
+                onChange={handleFileChange}  // FIXED 🔥
                 ref={fileInputRef}
                 style={{ display: "none" }}
               />
 
-              {/* Upload Button */}
               <button
                 type="button"
                 className="btn btn-outline-primary w-100 mb-3"
                 onClick={() => fileInputRef.current.click()}
               >
                 <i className="fa-solid fa-arrow-up-from-bracket me-2"></i>
-                Upload Image
+                {file ? "Change Media" : "Upload Image / Video"}
               </button>
 
-              {/* Image Preview */}
+              {/* Preview */}
               {preview && (
                 <div className="mb-3 text-center">
-                  <img
-                    src={preview}
-                    alt="Preview"
-                    className="img-fluid rounded"
-                    style={{ maxHeight: "350px", objectFit: "cover" }}
-                  />
+                  {previewType === "image" ? (
+                    <img
+                      src={preview}
+                      className="img-fluid rounded"
+                      style={{ maxHeight: "350px", objectFit: "cover" }}
+                      alt="img"
+                    />
+                  ) : (
+                    <video
+                      src={preview}
+                      controls
+                      className="rounded"
+                      style={{ width: "100%", maxHeight: "350px", objectFit: "cover" }}
+                    ></video>
+                  )}
                 </div>
               )}
 
-              {/* Submit Button */}
               <button
                 type="submit"
                 className="btn btn-primary w-100"

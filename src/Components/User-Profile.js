@@ -14,163 +14,145 @@ const Profile = () => {
   useEffect(() => {
     const userId = id || loggedInUser?.userId;
 
-    if (!userId) {
-      setError("User ID is missing.");
-      setLoading(false);
-      return;
-    }
-
-    const fetchUserData = async () => {
+    const fetchProfile = async () => {
       try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/user/${userId}`,
-          { withCredentials: true }
+        const res = await axios.get(
+          `${process.env.REACT_APP_API_URL}/user/${userId}`
         );
-
-        if (response.status === 200) {
-          setUser(response.data);
-        } else {
-          setError("User not found.");
-        }
+        setUser(res.data);
       } catch (err) {
-        console.error("User fetch error:", err);
-        setError("Failed to fetch user data.");
+        setError("Failed to load user");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchUserData();
+    fetchProfile();
   }, [id, loggedInUser]);
 
-  const handleDeletePost = async (postId) => {
+  const handleDelete = async (postId) => {
     try {
-      const response = await axios.delete(
-        `${process.env.REACT_APP_API_URL}/deletePost/${postId}`,
-        { withCredentials: true }
-      );
+      await axios.delete(`${process.env.REACT_APP_API_URL}/deletePost/${postId}`);
 
-      if (response.status === 200) {
-        setUser((prev) => ({
-          ...prev,
-          posts: prev.posts.filter((p) => p._id !== postId),
-        }));
-      }
-    } catch (error) {
-      alert("Failed to delete post.");
-      console.error(error);
+      setUser((prev) => ({
+        ...prev,
+        posts: prev.posts.filter((p) => p._id !== postId),
+      }));
+    } catch {
+      alert("Failed to delete post");
     }
   };
 
-  if (loading)
-    return (
-      <div className="text-center mt-5">
-        <div className="spinner-border"></div>
-      </div>
-    );
-
-  if (error)
-    return (
-      <p className="text-danger fw-bold text-center mt-4">{error}</p>
-    );
+  if (loading) return <div className="text-center mt-5"><div className="spinner-border"/></div>;
+  if (error) return <p className="text-danger text-center">{error}</p>;
 
   return (
     <div className="container mt-4">
 
       {/* Profile Section */}
-      <div className="row justify-content-center mb-4">
-        <div className="col-12 col-md-10 col-lg-8 text-center">
+      <div className="text-center mb-4">
+        <img
+          src={user.profileImage}
+          className="rounded-circle"
+          style={{ width: 120, height: 120, objectFit: "cover" }}
+          alt=""
+        />
 
-          <img
-            src={user?.profileImage || "/default-image.png"}
-            alt="Profile"
-            className="rounded-circle mb-3"
-            style={{ width: 120, height: 120, objectFit: "cover" }}
-          />
+        <h4 className="fw-bold mt-2">@{user.userId}</h4>
+        <h5 className="text-muted">{user.Name}</h5>
 
-          <h4 className="fw-bold">@{user?.userId}</h4>
-          <h5 className="text-muted">{user?.Name}</h5>
-
-          <div className="d-flex justify-content-center gap-4 mt-3">
-            <div className="text-center">
-              <h6 className="fw-bold">{user?.posts?.length || 0}</h6>
-              <p className="text-muted small m-0">Posts</p>
-            </div>
-
-            <div className="text-center">
-              <h6 className="fw-bold">{user?.followers || 0}</h6>
-              <p className="text-muted small m-0">Followers</p>
-            </div>
-
-            <div className="text-center">
-              <h6 className="fw-bold">{user?.following || 0}</h6>
-              <p className="text-muted small m-0">Following</p>
-            </div>
-          </div>
-
-        </div>
+        <p className="mt-2 fw-bold">{user.posts?.length || 0} Posts</p>
       </div>
 
       <hr />
 
-      {/* Posts Section */}
+      {/* Posts */}
       <h4 className="fw-bold text-center mb-3">Posts</h4>
 
       <div className="row g-4 justify-content-center">
 
-        {user?.posts?.length > 0 ? (
-          user.posts.map((post) => (
-            <div key={post._id} className="col-12 col-md-6 col-lg-4">
+        {user.posts?.length > 0 ? (
+          user.posts.map((post) => {
+            // Detect new vs old post
+            const mediaUrl = post.media || post.image;
+            const mediaType =
+              post.mediaType || (post.image ? "image" : "image");
 
-              <div className="card shadow-sm">
+            return (
+              <div className="col-12 col-md-6 col-lg-4" key={post._id}>
+                <div className="card shadow-sm">
 
-                {/* Card Header */}
-                <div className="card-header d-flex justify-content-between align-items-center">
-                  <div className="d-flex align-items-center">
-                    <img
-                      src={user?.profileImage || "/default-profile.png"}
-                      alt="User"
-                      className="rounded-circle me-2"
-                      style={{ width: 45, height: 45, objectFit: "cover" }}
-                    />
-                    <strong>@{user?.userId}</strong>
+                  {/* Header */}
+                  <div className="card-header d-flex justify-content-between align-items-center">
+                    <div className="d-flex align-items-center">
+                      <img
+                        src={user.profileImage}
+                        className="rounded-circle me-2"
+                        style={{ width: 40, height: 40, objectFit: "cover" }}
+                        alt=""
+                      />
+                      <strong>@{user.userId}</strong>
+                    </div>
+
+                    {loggedInUser?.id === user?.userId && (
+                      <button
+                        className="btn btn-sm btn-outline-danger"
+                        onClick={() => handleDelete(post._id)}
+                      >
+                        <i className="fa-solid fa-trash"></i>
+                      </button>
+                    )}
                   </div>
 
-                  {loggedInUser?.id === user?.userId && (
-                    <button
-                      className="btn btn-sm btn-outline-danger"
-                      onClick={() => handleDeletePost(post._id)}
-                    >
-                      <i className="fa-solid fa-trash"></i>
-                    </button>
-                  )}
+                  {/* MEDIA BLOCK */}
+                  <div className="bg-dark" style={{ height: 350 }}>
+
+                    {mediaType === "image" && (
+                      <img
+                        src={mediaUrl}
+                        alt=""
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "cover",
+                        }}
+                        onContextMenu={(e) => e.preventDefault()}
+                      />
+                    )}
+
+                    {mediaType === "video" && (
+                      <video
+                        src={mediaUrl}
+                        muted
+                        playsInline
+                        controls={false}
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "cover",
+                        }}
+                        onContextMenu={(e) => e.preventDefault()}
+                      />
+                    )}
+
+                  </div>
+
+                  {/* Caption */}
+                  <div className="card-body">
+                    <p className="mb-0">
+                      <strong>@{user.userId}:</strong> {post.text}
+                    </p>
+                  </div>
+
                 </div>
-
-                {/* Post Image */}
-                <img
-                  src={post.image || "/placeholder.png"}
-                  alt="Post"
-                  className="img-fluid"
-                  style={{ maxHeight: 350, objectFit: "cover" }}
-                />
-
-                {/* Caption */}
-                <div className="card-body">
-                  <p className="mb-0">
-                    <span className="fw-bold">@{user.userId}: </span>
-                    {post.text}
-                  </p>
-                </div>
-
               </div>
-
-            </div>
-          ))
+            );
+          })
         ) : (
           <p className="text-center text-muted">No posts available.</p>
         )}
-      </div>
 
+      </div>
     </div>
   );
 };

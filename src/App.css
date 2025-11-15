@@ -12,6 +12,13 @@ body {
   background-color: #f0f2f5; /* Added a light background color */
 }
 
+video {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+
 /* .mainDiv {
   display: flex;
 }

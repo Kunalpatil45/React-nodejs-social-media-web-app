@@ -21,6 +21,7 @@ const SignIn = () => {
       if (response.data.user) {
         setUser(response.data.user);
         localStorage.setItem("user", JSON.stringify(response.data.user));
+
         navigate(`/profile/${response.data.user.id}`);
       }
     } catch {
